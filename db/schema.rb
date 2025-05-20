@@ -10,14 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_16_041836) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_20_215052) do
   create_table "accounts", force: :cascade do |t|
-    t.integer "idAccount"
-    t.integer "cvu"
+    t.string "idAccount"
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
+    t.string "cvu"
     t.string "alias"
-    t.date "crationDate"
-    t.decimal "balance", precision: 15, scale: 2, default: "0.0"
+    t.date "creationDate"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "categorys", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "color"
+    t.string "icon"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "firstName"
+    t.string "lastName"
+    t.string "clientId"
+    t.integer "cuit"
+    t.date "creationDate"
+    t.string "email"
+    t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "accounts", "users"
 end
