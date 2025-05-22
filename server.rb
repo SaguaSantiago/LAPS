@@ -8,6 +8,9 @@ require 'dotenv/load'
 require 'sinatra/activerecord'
 require_relative 'models/user'
 require_relative 'models/account'
+require_relative 'models/offer'
+require_relative 'models/validity'
+
 
 class App < Sinatra::Application
     configure :development do 
@@ -21,7 +24,8 @@ class App < Sinatra::Application
         after_reload do 
             puts 'Reloaded...'
         end
-    end
+        ActiveRecord::Base.connection.execute('PRAGMA foreign_keys = ON')
+  end
     
   get '/' do
     'Welcome'
