@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_20_215052) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_22_220757) do
   create_table "accounts", force: :cascade do |t|
     t.string "idAccount"
     t.decimal "balance", precision: 10, scale: 2, default: "0.0"
@@ -30,6 +30,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_215052) do
     t.string "icon"
   end
 
+  create_table "offers", force: :cascade do |t|
+    t.integer "id_offer"
+    t.string "company_offer"
+    t.string "info_offer"
+    t.integer "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_offers_on_account_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "firstName"
     t.string "lastName"
@@ -42,5 +52,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_215052) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "validities", force: :cascade do |t|
+    t.date "start_offer"
+    t.date "end_offer"
+    t.integer "account_id", null: false
+    t.integer "offer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_validities_on_account_id"
+    t.index ["offer_id"], name: "index_validities_on_offer_id"
+  end
+
   add_foreign_key "accounts", "users"
+  add_foreign_key "offers", "accounts"
+  add_foreign_key "validities", "accounts"
+  add_foreign_key "validities", "offers"
 end
