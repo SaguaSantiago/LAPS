@@ -1,4 +1,4 @@
-class CreateLoan < ActiveRecord::Migration[8.0]
+class CreateLoan < ActiveRecord::Migration[7.0]
   def change
     create_table :loan do |t|
       t.integer :quotas_number

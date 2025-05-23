@@ -1,4 +1,4 @@
-class CreateDebt < ActiveRecord::Migration[8.0]
+class CreateDebt < ActiveRecord::Migration[7.0]
   def change
     create_table :debt do |t|
       t.date :maturuty_date

@@ -10,6 +10,9 @@ require_relative 'models/user'
 require_relative 'models/account'
 require_relative 'models/offer'
 require_relative 'models/validity'
+require_relative 'models/transaction'
+require_relative 'models/loan'
+require_relative 'models/quota'
 
 
 class App < Sinatra::Application
