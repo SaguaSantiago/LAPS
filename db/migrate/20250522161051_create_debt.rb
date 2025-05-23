@@ -6,5 +6,6 @@ class CreateDebt < ActiveRecord::Migration[7.0]
       t.decimal :outstanding_balance, precision: 15, scale: 2
 
       t.timestamps
+    end
   end
 end

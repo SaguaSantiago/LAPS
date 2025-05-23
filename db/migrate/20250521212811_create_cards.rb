@@ -14,5 +14,6 @@ class CreateCards < ActiveRecord::Migration[7.0]
       t.references :account, foreign_key: true
 
       t.timestamps
+    end
   end
 end
