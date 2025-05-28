@@ -29,8 +29,15 @@ class App < Sinatra::Application
         end
         ActiveRecord::Base.connection.execute('PRAGMA foreign_keys = ON')
   end
-    
+  
+  set :views, File.expand_path('../views', __FILE__)
+  set :public_folder, File.expand_path('../public', __FILE__)
+  
   get '/' do
     'Welcome'
+  end
+
+  get '/login' do
+    erb :login
   end
 end

@@ -1,0 +1,108 @@
+<form action="/login" class="initial-form" method="post">
+  <img src="/images/Logo-dark.svg" alt="logo-wallet">
+  <h2>¡Te damos la bienvenida!</h2>
+
+  <div style="margin-top:auto;" class="input-container">
+    <label>Email:</label>
+    <input type="email" placeholder="example@example.com" name="email" required>
+  </div>
+
+  <div style="margin-bottom:auto;" class="input-container">
+    <label>Password:</label>
+    <input placeholder="********" type="password" name="password" required><br><br>
+  </div>
+
+  <button type="submit">Log In</button>
+
+  <span>¿Aún no tienes cuenta? <a href="/signup">Registrate</a></span>
+</form>
+
+
+<div class="form-background"></div>
+
+<style>
+  form.initial-form {
+    box-sizing: content-box;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 30px;
+    border-radius: 30px;
+    width:350px;
+    min-height:350px;
+    z-index:10;
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba(31, 135, 86, 0.37);
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+  }
+
+  form.initial-form h2 {
+    margin-bottom: 20px;
+  }
+
+  form.initial-form div input {
+    border: none;
+    outline: none;
+    background: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    height: 40px;
+    padding: 0 10px;
+    transition: border-color 0.2s;
+  }
+
+  form.initial-form div input:focus {
+    border-color: var(--primary-color);
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+    /* max-width:250px; */
+  }
+
+  .input-container label {
+    font-size: 12px;
+    padding-left: 7px;
+  }
+
+  form.initial-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--bg-color);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  form.initial-form span {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  form.initial-form img {
+    aspect-ratio: 120/44;
+    margin-bottom: 20px;
+    /* height:120px; */
+    width: 120px;
+  }
+
+  .form-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(circle 500px at 50% 200px,rgba(4, 56, 32, 0.23), transparent);
+}
+</style>
