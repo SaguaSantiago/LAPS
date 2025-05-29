@@ -1,0 +1,79 @@
+
+    <section class= "buttons">
+
+        <button type= "sumbit">
+            <img src="/images/bank.svg" alt="cbu-icon" class= "btn-icon">
+            <span class= "btn-label">Ingresar CBU, CVU o Alias</span>
+        </button>
+
+        <button type= "sumbit">
+            <img src="/images/tr-card.svg" alt="tel-icon" class= "btn-icon">
+            <span class= "btn-label">Ingresar Celular</span>
+        </button>
+
+        <button type= "sumbit">
+            <img src="/images/contacts.svg" alt="contacts-icon" class= "btn-icon">
+            <span class= "btn-label">Contactos frecuentes</span>        
+        </button>
+
+    </section>
+
+    <img src="/images/transference-ilustration.svg" alt="tr-ilustration" class= "ilustration">
+
+<style>
+    
+.buttons{
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 6%;
+    height: 650px;
+    z-index:10;
+    width:50%;
+}
+
+.buttons > button{
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80%;
+    height: 25%;
+    padding: 30px 50px;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    background: var(--bg-color-light);
+    cursor: pointer;
+    border: none;
+    font-size: 35px;
+    transition: transform 0.2s ease; 
+}
+
+.buttons > button:hover{
+    transform: scale(1.03);
+}
+
+.btn-icon{
+    left: 60px;
+    width: 48px;
+    height: 48px;
+    display: block;
+}
+
+.btn-label{
+    text-align: left;
+    margin-left: 10%;
+    flex-grow: 1;
+}
+
+.ilustration{
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    right: 0px;
+    bottom: 100px;
+}
+
+</style>
