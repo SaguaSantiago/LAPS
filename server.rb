@@ -34,7 +34,7 @@ class App < Sinatra::Application
   set :public_folder, File.expand_path('../public', __FILE__)
   
   get '/' do
-    'Welcome'
+    erb :home, layout: :dashboardLayout 
   end
 
   get '/login' do
