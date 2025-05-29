@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <title>My Sinatra App</title>
+</head>
+<body>
+    <style>
+      :root {
+        --bg-color: #1A2820;
+        --bg-color-light: #285239;
+        --primary-color-light: #53CF86;
+        --primary-color: #4CAF50;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        /* 
+        justify-content: center; */
+        min-height: 100vh;
+        /* align-items: center; */
+        background: var(--bg-color);
+        position: relative;
+      }
+
+      * {
+        font-family: "Roboto", sans-serif;
+        padding:0;
+        margin:0;
+        box-sizing: border-box;
+      }
+
+        .dashboard-header {
+            width: 100%;
+            height: 80px;
+            padding: 0 40px;
+            /* background-color: var(--bg-color-light); */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .logo {
+            height: 100%;
+        }
+
+        .dashboard-aside {
+            width: 250px;
+            height: 100vh;
+            z-index: 1000;
+            position: absolute;
+            overflow: hidden;
+            left: 0;
+            top: 0;
+            background-color: var(--bg-color);
+            transition: width 0.2s ease-in-out;
+        }
+
+        .dashboard-aside.closed {
+            width: 0px;
+            
+        }
+    </style>
+
+  <% if @error %>
+    <p style="color: red;"><%= @error %></p>
+  <% end %>
+
+    <header class="dashboard-header">
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>¡Hola Noelia!</span>
+        </div>
+        <img class="logo" src="/images/Logo-light.svg" alt="wallet-logo">
+    </header>
+
+    <aside class="dashboard-aside closed">
+
+    </aside>
+  <%= yield %>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const userInfo = document.querySelector(".user-info");
+        const sidebar = document.querySelector(".dashboard-aside");
+
+        userInfo.addEventListener("click", () => {
+            sidebar.classList.toggle("closed");
+        });
+
+        document.addEventListener("click", (e) => {
+            // Si el click es fuera del sidebar y del user-info
+            if (!sidebar.contains(e.target) && !userInfo.contains(e.target)) {
+            sidebar.classList.add("closed");
+            }
+        });
+    });
+</script>
+</body>
+</html>
