@@ -40,4 +40,8 @@ class App < Sinatra::Application
   get '/login' do
     erb :login
   end
+
+  get '/transference' do 
+    erb :transference, layout: :sectionLayout
+  end
 end

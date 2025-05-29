@@ -1,0 +1,44 @@
+<form action="/transference" class="initial-form" method="post">
+
+    <button type= "sumbit">Ingresar CBU, CVU o Alias</button>
+
+    <button type= "sumbit">Ingresar Celular</button>
+
+    <button type= "sumbit">Contactos frecuentes</button>
+
+
+</form>
+
+<style>
+
+form.initial-form{
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0px;
+    z-index:10;
+    width:40%;
+    height: 650px;
+    margin-left: 5%;
+}
+
+form.initial-form > button{
+    min-width: 80%;
+    height: 25%;
+    padding: 30px 50px;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    background: var(--bg-color-light);
+    cursor: pointer;
+    border: none;
+    font-size: 35px;
+    transition: transform 0.2s ease; 
+}
+
+form.initial-form > button:hover{
+    transform: scale(1.03);
+}
+
+</style>
