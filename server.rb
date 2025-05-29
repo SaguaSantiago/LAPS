@@ -34,16 +34,29 @@ class App < Sinatra::Application
   set :public_folder, File.expand_path('../public', __FILE__)
   
   get '/' do
-    'Welcome'
+    erb :home, layout: :dashboardLayout 
   end
 
   get '/login' do
     erb :login
   end
 
+
   get '/transference' do 
     @sectionName = 
     [{ label: "Transferir Dinero"}]
     erb :transference, layout: :sectionLayout
+  end
+  
+  get '/signup' do
+    @inputs = [
+    { label: "DNI", type: "text", name: "dni", placeholder: "#######", required: true },
+    { label: "Usuario", type: "text", name: "user", placeholder: "User123", required: true },
+    { label: "Telefono", type: "number", name: "phone", placeholder: "", required: true },
+    { label: "Email", type: "email", name: "email", placeholder: "example@example.com", required: true },
+    { label: "Contraseña", type: "password", name: "password", placeholder: "********", required: true }
+  ]
+
+    erb :signup
   end
 end

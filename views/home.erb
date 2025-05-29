@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="money-area">money-area</div>
+    <div class="cards-area">cards-area</div>
+    <div class="calendar-area">calendar-area</div>
+    <div class="offers-area">offers-area</div>
+    <div class="loan-area">loan-area</div>
+    <div class="admin-area">admin-area</div>
+    <div class="activity-area">activity-area</div>
+</div>
+
+<style>
+.container {
+    padding: 20px;
+    flex-grow:1;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+}
+
+.container div {
+    background-color: #285239;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.money-area { grid-area: 1 / 1 / 4 / 6; }
+.cards-area { grid-area: 4 / 1 / 7 / 4; }
+.calendar-area { grid-area: 7 / 1 / 9 / 4; }
+.offers-area { grid-area: 1 / 6 / 4 / 11; }
+.loan-area { grid-area: 4 / 4 / 5 / 8; }
+.admin-area { grid-area: 4 / 8 / 9 / 11; }
+.activity-area { grid-area: 5 / 4 / 9 / 8; }
+</style>

@@ -8,6 +8,7 @@ class CreateCategories < ActiveRecord::Migration[8.0]
       t.string :description
       t.string :color
       t.string :icon 
+      t.timestamps
     end
   end
 end
