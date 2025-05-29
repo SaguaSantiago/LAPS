@@ -19,7 +19,7 @@ end
 post '/signup' do
     user = User.new(
         dni: params[:dni],
-        username: params[:user], 
+        username: params[:username], 
         phone: params[:phone],
         email: params[:email],
         password: params[:password],
@@ -29,9 +29,8 @@ post '/signup' do
     if user.save
         redirect '/login'
     else 
-        #@errors = user.errors.full_messages #añadir error en la vista
-        @error = "Campos incompletos"
-        erb :register
+        @errors = user.errors.full_messages #añadir error en la vista
+        erb :signup
     end
 end
 
@@ -41,7 +40,7 @@ get '/login' do
 end
 
 post '/login' do
-    user = User.find_by(username: params[:user])
+    user = User.find_by(username: params[:username])
 
     if user && user.authenticate(params[:password])
         session[:user_id] = user.id
