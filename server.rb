@@ -41,6 +41,11 @@ class App < Sinatra::Application
     erb :login
   end
 
+
+  get '/transference' do 
+    erb :transference, layout: :sectionLayout
+  end
+  
   get '/signup' do
     @inputs = [
     { label: "DNI", type: "text", name: "dni", placeholder: "#######", required: true },
