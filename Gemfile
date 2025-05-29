@@ -49,3 +49,6 @@ gem 'rake'
 # Permite cargar variables de entorno desde un archivo `.env` en el directorio raíz del proyecto.
 # se utilizara para gestionar el entorno
 gem 'dotenv'
+
+#cifrar contraseñas de forma segura.
+gem 'bcrypt'
