@@ -5,6 +5,8 @@ class Tranfer < Transaction
     validates :method, presence: true
     valdiates :has_sufficient_balance
 
+    after_created :apply_transfer 
+
     private 
 
     def has_sufficient_balance
@@ -13,4 +15,13 @@ class Tranfer < Transaction
         end
     end
 
+    def apply_transfer 
+        ActiveRecord::Base.transaction do 
+            source_account.balance -= amount
+            source_account.save!
+
+            target_account.balance += amount
+            target_account.save!
+        end
+    end
 end
