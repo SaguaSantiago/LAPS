@@ -12,9 +12,8 @@
 
 ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
   create_table "accounts", force: :cascade do |t|
-    t.string "idAccount"
-    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
-    t.string "cvu"
+    t.integer "idAccount"
+    t.integer "cvu"
     t.string "alias"
     t.date "creationDate"
     t.integer "user_id"
