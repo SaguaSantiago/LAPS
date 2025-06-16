@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_001250) do
   create_table "accounts", force: :cascade do |t|
-    t.integer "idAccount"
-    t.integer "cvu"
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
+    t.string "cvu"
     t.string "alias"
-    t.date "creationDate"
+    t.date "creation_date"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -43,20 +43,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
     t.string "description"
     t.string "color"
     t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_categories_on_account_id"
     t.index ["event_id"], name: "index_categories_on_event_id"
     t.index ["transaction_id"], name: "index_categories_on_transaction_id"
   end
 
-  create_table "categorys", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.string "color"
-    t.string "icon"
-  end
-
   create_table "debt", force: :cascade do |t|
-    t.date "maturuty_date"
+    t.date "maturity_date"
     t.decimal "interest", precision: 5, scale: 2
     t.decimal "outstanding_balance", precision: 15, scale: 2
     t.datetime "created_at", null: false
@@ -83,13 +78,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
   create_table "events", force: :cascade do |t|
     t.integer "category_id"
     t.integer "account_id"
-    t.integer "eventDate_id"
+    t.integer "event_date_id"
     t.string "title"
     t.text "description"
     t.string "period"
     t.index ["account_id"], name: "index_events_on_account_id"
     t.index ["category_id"], name: "index_events_on_category_id"
-    t.index ["eventDate_id"], name: "index_events_on_eventDate_id"
+    t.index ["event_date_id"], name: "index_events_on_event_date_id"
   end
 
   create_table "loan", force: :cascade do |t|
@@ -151,6 +146,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "dni"
+    t.string "username"
+    t.string "password_digest"
   end
 
   create_table "validities", force: :cascade do |t|
@@ -174,7 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_132434) do
   add_foreign_key "event_dates", "transactions"
   add_foreign_key "events", "accounts"
   add_foreign_key "events", "categories"
-  add_foreign_key "events", "eventDates"
+  add_foreign_key "events", "event_dates"
   add_foreign_key "loan", "transactions"
   add_foreign_key "offers", "accounts"
   add_foreign_key "quotas", "loans"

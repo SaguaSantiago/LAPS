@@ -1,22 +1,80 @@
-<form action="/register" class="initial-form" method="POST">
+<form action="/signup" class="initial-form" method="POST">
   <img src="/images/Logo-dark.svg" alt="logo-wallet">
   <h2>¡Te damos la bienvenida!</h2>
 
-  <% @inputs.each_with_index do |input, index| %>
     <div class="input-container">
-      <label><%= input[:label] %>:</label>
+      <label>Cuit:</label>
       <input 
-        type="<%= input[:type] %>" 
-        name="<%= input[:name] %>" 
-        placeholder="<%= input[:placeholder] %>" 
-        <%= "required" if input[:required] %>
+        type="text" 
+        name="cuit" 
+        placeholder="##########" 
+        required
       >
     </div>
-  <% end %>
+
+    <div class="input-container">
+      <label>DNI:</label>
+      <input 
+        type="text" 
+        name="dni" 
+        placeholder="##########" 
+        required
+      >
+    </div>
+
+    <div class="input-container">
+      <label>Usuario:</label>
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="User123" 
+        required
+      >
+    </div>
+
+    <div class="input-container">
+      <label>Telefono:</label>
+      <input 
+        type="number" 
+        name="phone" 
+        placeholder="" 
+        required
+      >
+    </div>
+
+    <div class="input-container">
+      <label>Email:</label>
+      <input 
+        type="email" 
+        name="email" 
+        placeholder="example@example.com" 
+        required
+      >
+    </div>
+
+    <div class="input-container">
+      <label>Contraseña:</label>
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="********" 
+        required
+      >
+    </div>
 
   <button type="submit">Registrar</button>
 
   <span>¿Ya tienes una cuenta? <a href="/signup">Ingresa</a></span>
+
+  <% if @errors && @errors.any? %>
+  <div class="alert alert-danger">
+    <ul>
+      <% @errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 </form>
 
 

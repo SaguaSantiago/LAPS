@@ -54,20 +54,13 @@ class App < Sinatra::Application
   end
   
   get '/signup' do
-    @inputs = [
-    { label: "DNI", type: "text", name: "dni", placeholder: "#######", required: true },
-    { label: "Usuario", type: "text", name: "user", placeholder: "User123", required: true },
-    { label: "Telefono", type: "number", name: "phone", placeholder: "", required: true },
-    { label: "Email", type: "email", name: "email", placeholder: "example@example.com", required: true },
-    { label: "Contraseña", type: "password", name: "password", placeholder: "********", required: true }
-  ]
-
     erb :signup
   end
 
   post '/signup' do
     user = User.new(
         dni: params[:dni],
+        cuit: params[:cuit],
         username: params[:username], 
         phone: params[:phone],
         email: params[:email],
@@ -88,7 +81,7 @@ class App < Sinatra::Application
 
     if user && user.authenticate(params[:password])
         session[:user_id] = user.id
-        redirect '/welcome'
+        redirect '/'
     else 
         @error = "usuario o contraseña incorrecta"
         erb :login
