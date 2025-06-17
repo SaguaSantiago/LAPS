@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_001250) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_175852) do
   create_table "accounts", force: :cascade do |t|
     t.decimal "balance", precision: 10, scale: 2, default: "0.0"
     t.string "cvu"
@@ -68,23 +68,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_001250) do
   end
 
   create_table "event_dates", force: :cascade do |t|
-    t.integer "event_id"
     t.integer "transaction_id"
     t.date "date"
-    t.index ["event_id"], name: "index_event_dates_on_event_id"
     t.index ["transaction_id"], name: "index_event_dates_on_transaction_id"
+  end
+
+  create_table "event_schedules", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "event_date_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_date_id"], name: "index_event_schedules_on_event_date_id"
+    t.index ["event_id", "event_date_id"], name: "index_event_schedules_on_event_id_and_event_date_id", unique: true
+    t.index ["event_id"], name: "index_event_schedules_on_event_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.integer "category_id"
     t.integer "account_id"
-    t.integer "event_date_id"
     t.string "title"
     t.text "description"
     t.string "period"
     t.index ["account_id"], name: "index_events_on_account_id"
     t.index ["category_id"], name: "index_events_on_category_id"
-    t.index ["event_date_id"], name: "index_events_on_event_date_id"
   end
 
   create_table "loan", force: :cascade do |t|
@@ -168,11 +174,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_001250) do
   add_foreign_key "categories", "events"
   add_foreign_key "categories", "transactions"
   add_foreign_key "deposit", "transactions"
-  add_foreign_key "event_dates", "events"
   add_foreign_key "event_dates", "transactions"
+  add_foreign_key "event_schedules", "event_dates"
+  add_foreign_key "event_schedules", "events"
   add_foreign_key "events", "accounts"
   add_foreign_key "events", "categories"
-  add_foreign_key "events", "event_dates"
   add_foreign_key "loan", "transactions"
   add_foreign_key "offers", "accounts"
   add_foreign_key "quotas", "loans"

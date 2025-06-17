@@ -1,5 +1,4 @@
 class Event < ActiveRecord::Base
-  belongs_to :account
-  has_one :category
-  has_many :event_dates
+  has_many :event_schedule
+  has_many :event_dates, through: :event_schedule
 end
