@@ -1,27 +1,38 @@
+    <div class="transference-container">
 
-    <section class= "buttons">
+        <section class= "buttons">
 
-        <button type= "sumbit">
-            <img src="/images/bank.svg" alt="cbu-icon" class= "btn-icon">
-            <span class= "btn-label">Ingresar CBU, CVU o Alias</span>
-        </button>
+            <button type= "sumbit">
+                <img src="/images/bank.svg" alt="cbu-icon" class= "btn-icon">
+                <span class= "btn-label">Ingresar CBU, CVU o Alias</span>
+            </button>
 
-        <button type= "sumbit">
-            <img src="/images/tr-card.svg" alt="tel-icon" class= "btn-icon">
-            <span class= "btn-label">Ingresar Celular</span>
-        </button>
+            <button type= "sumbit">
+                <img src="/images/tr-card.svg" alt="tel-icon" class= "btn-icon">
+                <span class= "btn-label">Ingresar Celular</span>
+            </button>
 
-        <button type= "sumbit">
-            <img src="/images/contacts.svg" alt="contacts-icon" class= "btn-icon">
-            <span class= "btn-label">Contactos frecuentes</span>        
-        </button>
+            <button type= "sumbit">
+                <img src="/images/contacts.svg" alt="contacts-icon" class= "btn-icon">
+                <span class= "btn-label">Contactos frecuentes</span>        
+            </button>
 
-    </section>
+        </section>
 
-    <img src="/images/transference-ilustration.svg" alt="tr-ilustration" class= "ilustration">
-
+        <img src="/images/transference-ilustration.svg" alt="tr-ilustration" class= "ilustration">
+    </div>
 <style>
-    
+
+.transference-container{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
 .buttons{
     box-sizing: content-box;
     display: flex;
@@ -29,10 +40,9 @@
     justify-content: space-around;
     align-items: center;
     /* margin-left: 6%; */
-    margin: 1%;
-    height: 650px;
+    height:80%;
     z-index:10;
-    width:55%;
+    width:60%;
 }
 
 .buttons > button{
@@ -40,7 +50,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 80%;
+    width: 80%;
     height: 25%;
     padding: 30px 50px;
     color: white;
@@ -71,11 +81,9 @@
 }
 
 .ilustration{
-    position: absolute;
-    width: 550px;
-    height: 550px;
-    right: 0px;
-    bottom: 100px;
+    position: relative;
+    width: 30%;
+    height: 80%;
 }
 
 </style>
