@@ -44,7 +44,7 @@ class App < Sinatra::Application
 
   get '/transference' do 
     @sectionName = 
-    [{ label: "Transferir Dinero"}]
+    { label: "Transferir Dinero"}
     erb :transference, layout: :sectionLayout
   end
   
