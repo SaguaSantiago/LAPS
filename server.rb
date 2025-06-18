@@ -15,6 +15,9 @@ require_relative 'models/account'
 require_relative 'models/transaction'
 require_relative 'models/loan'
 require_relative 'models/quota'
+require_relative 'models/event'
+require_relative 'models/eventDate'
+require_relative 'models/eventSchedule'
 
 
 class App < Sinatra::Application
@@ -93,5 +96,33 @@ class App < Sinatra::Application
   post '/logout' do
     session.clear
     redirect '/login'
+  end
+
+  get '/calendar' do
+    redirect '/login' unless session[:user_id]
+    backDays = [6,0,1,2,3,4,5]
+    user = User.find(session[:user_id])
+    account = user.account
+
+    delta = (params[:delta] || 0).to_i
+    @today = Date.today
+    @dateToShow = Date.today >> delta
+
+    first_of_month = Date.new(@dateToShow.year, @dateToShow.month, 1)
+
+    days_to_monday = (first_of_month.wday - 1) % 7
+    @firstDay = first_of_month - days_to_monday
+
+    last_of_month = Date.new(@dateToShow.year, @dateToShow.month, -1)
+
+    days_to_sunday = (7 - last_of_month.wday) % 7
+    @lastDay = last_of_month + days_to_sunday
+
+    # Buscar eventos solo en ese rango extendido
+    @events = Event.joins(:event_dates)
+                  .where(account_id: account)
+                  .where(event_dates: { date: @firstDay..@lastDay })
+                  .distinct
+    erb :calendar, layout: :sectionLayout
   end
 end

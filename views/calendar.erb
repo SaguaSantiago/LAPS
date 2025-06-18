@@ -1,0 +1,110 @@
+<main>
+  <section class="calendar-container">
+    <a
+      href="/calendar?delta=<%= (params[:delta] || 0).to_i - 1 %>"
+      class="arrow"
+      ><%= '<'%></a
+    >
+    <div class="days-container">
+      <div class="week-day">Lunes</div>
+      <div class="week-day">Martes</div>
+      <div class="week-day">Miércoles</div>
+      <div class="week-day">Jueves</div>
+      <div class="week-day">Viernes</div>
+      <div class="week-day">Sábado</div>
+      <div class="week-day">Domingo</div>
+      <% (@firstDay..@lastDay).each do |day| %>
+      <article class="day-box <%= 'today-box' if day == @today %> <%= 'not-in-month' if day.month != @dateToShow.month %>">
+        <p><%= day.strftime("%d") %></p>
+
+        <% day_events = @events.select { |e| e.event_dates.any? { |ed| ed.date == day } } %> <% if day_events.any? %>
+        <ul>
+          <% day_events.each do |event| %>
+          <li><%= event.title %></li>
+          <% end %>
+        </ul>
+        <% end %>
+      </article>
+      <% end %>
+    </div>
+    <a
+      href="/calendar?delta=<%= (params[:delta] || 0).to_i + 1 %>"
+      class="arrow"
+      >></a
+    >
+  </section>
+  <h2 class="month-title"><%= @dateToShow.strftime("%B") %></h2>
+</main>
+
+<style>
+  * {
+    margin: 0;
+  }
+  main {
+    min-width: 100vw;
+    height: calc(100vh - 100px);
+    background-color: #1a2820;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y : auto;
+  }
+  .week-day {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding-bottom: 5px;
+  }
+  div.days-container {
+    overflow: hidden;
+    width: 75%;
+    height: 80vh;
+    border: 1px solid white;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 30px repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  .calendar-container {
+    width: 100%;
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+  }
+  .arrow {
+    font-size: 50px !important;
+    color: white !important;
+    text-decoration: none;
+  }
+
+  .day-box {
+    border: 1px solid white;
+    padding: 10px 3px;
+  }
+
+   p {
+    color: white;
+  }
+
+  .today-box {
+    background: #53cf8622;
+  }
+
+  .month-title {
+    color: white;
+  }
+
+  .day-box.not-in-month {
+    border-color:rgba(255, 255, 255, 0.19);
+    color: rgba(255, 255, 255, 0.19) !important;
+  }
+
+  .day-box.not-in-month p {
+    color: rgba(255, 255, 255, 0.19) !important;
+  }
+</style>
