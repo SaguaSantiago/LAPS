@@ -117,7 +117,8 @@ class App < Sinatra::Application
 
     days_to_sunday = (7 - last_of_month.wday) % 7
     @lastDay = last_of_month + days_to_sunday
-
+    @sectionName = 
+    { label: "Calendario"}
     # Buscar eventos solo en ese rango extendido
     @events = Event.joins(:event_dates)
                   .where(account_id: account)
