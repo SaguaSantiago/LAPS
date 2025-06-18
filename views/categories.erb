@@ -1,0 +1,47 @@
+    <div class="categories-container">
+        <section class ="categories-section">
+            <div class="category">
+                <% @categories.each do |category| %>
+                    <div class="category">
+                        <h3><%= category.name %></h3>
+                        <%# Add more category details if needed %>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+    
+    </div>
+
+<style>
+    .categories-container {
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--bg-color);
+    }
+    .categories-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+    }
+    .category {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        width: 200px;
+        height: 200px;
+        padding: 10px;
+        margin: 5px;
+        background-color: var(--bg-color-light);
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+
+</style>

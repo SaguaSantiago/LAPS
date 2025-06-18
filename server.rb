@@ -58,6 +58,19 @@ class App < Sinatra::Application
     erb :transference, layout: :sectionLayout
   end
   
+  get '/categories' do 
+    redirect '/login' unless session[:user_id]
+
+    user = User.find(session[:user_id])
+    account = user.account
+
+    @sectionName = { label: "Categorías" }
+
+    @categories = Category.where(account_id: account.id)
+    @categories = @categories.order(:name) if @categories.any?
+    erb :categories, layout: :sectionLayout
+  end
+
   get '/signup' do
     erb :signup
   end
