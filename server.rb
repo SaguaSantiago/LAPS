@@ -123,12 +123,14 @@ class App < Sinatra::Application
       description: params[:description],
       period: params[:period],
       category_id: params[:category_id],
-      account_id: account
+      account_id: account.id
     )
+
+     event.instance_variable_set(:@start_date, Date.parse(params[:date])) if params[:date]
 
     if event.save
       status 201
-      redirect '/events'
+      redirect '/calendar'
     else
       status 422
       @errors = event.errors.full_messages
@@ -165,14 +167,13 @@ class App < Sinatra::Application
     days_to_sunday = (7 - last_of_month.wday) % 7
     @lastDay = last_of_month + days_to_sunday
 
-     @sectionName = { label: "Calendario" }
+    @sectionName = { label: "Calendario" }
 
     # Buscar eventos solo en ese rango extendido
-    @events = Event.joins(:event_dates)
+    @events = Event.includes(:category).joins(:event_dates)
                   .where(account_id: account)
                   .where(event_dates: { date: @firstDay..@lastDay })
                   .distinct
-    puts "No hay eventos" if @events.empty?
     erb :calendar, layout: :sectionLayout
   end
 

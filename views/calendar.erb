@@ -19,14 +19,16 @@
       <div class="week-day">Domingo</div>
       <% (@firstDay..@lastDay).each do |day| %>
       <article class="day-box <%= 'today-box' if day == @today %> <%= 'not-in-month' if day.month != @dateToShow.month %>">
-        <p><%= day.strftime("%d") %></p>
-        <a class="" href="/create-event">
-          <img src="/images/circle-dashed-plus.svg" alt="more events">
-        </a>
+        <div style="width: 24px; height: 100%;">
+          <p><%= day.strftime("%d") %></p>
+          <a class="" href="/create-event?date=<%=day.strftime('%Y-%m-%d')%>">
+            <img src="/images/circle-dashed-plus.svg" alt="more events">
+          </a>
+        </div>
         <% day_events = @events.select { |e| e.event_dates.any? { |ed| ed.date == day } } %> <% if day_events.any? %>
-        <ul>
-          <% day_events.each do |event| %>
-          <li><%= event.title %></li>
+        <ul style="flex-grow: 1; height: 100%;">
+          <% day_events.first(3).each do |event| %>
+          <li style="background-color:<%= event.category.color%>9f"><%= event.title %></li>
           <% end %>
         </ul>
         <% end %>
@@ -92,6 +94,8 @@
   .day-box {
     border: 1px solid white;
     padding: 10px 3px;
+    display: flex;
+    gap: 16px;
   }
 
    p {
@@ -143,5 +147,19 @@
 
   .today-box a {
     opacity: 1;
+  }
+
+  ul {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  li {
+    padding: 1px 0;
+    text-align: center;
   }
 </style>
