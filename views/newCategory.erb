@@ -53,26 +53,31 @@
 
 <style>
     .category-container {
-        width: 100%;
-        height: 80vh;
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
-        align-items: center;
+        align-items: flex-start;
+        gap: 30px;
+        padding: 40px;
         background-color: var(--bg-color);
+        box-sizing: border-box;
+        min-height: 80vh;
+        min-width: 600px;
     }
+    
     .category-section {
-        width: 700px;
-        height: 50vh;
+        width: 100%;
+        max-width: 500px;
         border-radius: 20px;
-        margin-top: 50px;
-        display:flex;
+        padding: 40px 30px;
+        background: #e0f9ff;
+        display: flex;
         flex-direction: column;
         gap: 20px;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 20px;
-        background: #e0f9ff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        flex: 1 1 400px;
     }
+
     .category-section input{
         border-color: var(--primary-color);
         border: none;
@@ -103,8 +108,10 @@
     }
 
     .newCategopry-im {
-        width: 600px;
-        height: 600px;
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        flex: 1 1 400px;
     }
     .color-picker-wrapper {
     width: 40px;
@@ -156,6 +163,17 @@
     .category-section button:hover {
         transform: scale(1.05);
         transition: transform 0.2s ease;
+    }
+    @media (max-width: 1024px) {
+    .category-section {
+        padding: 30px 20px;
+    }
+    }
+
+    @media (max-width: 768px) {
+    .category-section, .category-container svg {
+        max-width: 100%;
+    }
     }
 </style>
 
