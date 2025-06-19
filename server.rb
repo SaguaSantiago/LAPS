@@ -48,6 +48,7 @@ class App < Sinatra::Application
   end
 
   get '/' do
+    redirect '/login' unless logged_in?
     erb :home, layout: :dashboardLayout 
   end
 
@@ -157,6 +158,17 @@ class App < Sinatra::Application
     end
   end
 
+  helpers do
+    def current_user
+      @current_user ||= User.find_by(id: session[:user_id])
+    end
+
+    def logged_in?
+      !!current_user
+    end
+  end
+
+
   get '/calendar' do
     require_login
     user = current_user
@@ -252,6 +264,20 @@ class App < Sinatra::Application
       @sectionName = { label: "Error: Transacción no encontrada" }
       status 404
       erb :not_found, layout: :sectionLayout
+    end
+  end
+
+  post '/' do
+    redirect '/login' unless logged_in?
+
+    cantidad = params[:cantidad].to_f
+
+    if cantidad != 0
+      current_user.account.actualizar_balance(cantidad)
+      redirect '/'
+    else
+      @error = "Debes ingresar una cantidad válida."
+      erb :home
     end
   end
 end
