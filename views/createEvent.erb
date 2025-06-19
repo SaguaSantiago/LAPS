@@ -1,0 +1,123 @@
+<main>
+  <form action="/create-event" class="initial-form" method="post">
+    <div style="margin-top: auto" class="input-container">
+      <label>Titulo:</label>
+      <input type="text" placeholder="" name="title" required />
+    </div>
+
+    <div style="margin-bottom: auto" class="input-container">
+      <label>Descripcion:</label>
+      <input
+        placeholder=""
+        type="text"
+        name="description"
+        required
+      /><br /><br />
+    </div>
+
+    <div class="input-container">
+      <label>Categoria (opcional)</label>
+      <select style="height: 40px" name="category_id" id="category_id">
+        <option value="">Selecciona Categoria</option>
+        <% @categories.each do |category| %>
+        <option value="<%= category[:id] %>"><%= category[:name] %></option>
+        <%end%>
+      </select>
+    </div>
+
+    <div class="input-container">
+      <label>Periodo</label>
+      <select style="height: 40px" name="period" id="period">
+        <option value="monthly">Mensual</option>
+        <option value="diary">Diaria</option>
+        <option value="spontaneus">Espontanea</option>
+      </select>
+    </div>
+
+    <button type="submit">Crear Evento</button>
+    <span><%= @error %></span>
+  </form>
+</main>
+
+<style>
+  main {
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  form.initial-form {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 30px;
+    border-radius: 30px;
+    width: 350px;
+    min-height: 350px;
+    z-index: 10;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  form.initial-form h2 {
+    margin-bottom: 20px;
+  }
+
+  form.initial-form div input {
+    border: none;
+    outline: none;
+    background: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    height: 40px;
+    padding: 0 10px;
+    transition: border-color 0.2s;
+    color: white;
+  }
+
+  form.initial-form div input:focus {
+    border-color: var(--primary-color);
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+    /* max-width:250px; */
+  }
+
+  .input-container label {
+    font-size: 12px;
+    padding-left: 7px;
+  }
+
+  form.initial-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    background-color: var(--bg-color-light);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  form.initial-form span {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  form.initial-form img {
+    aspect-ratio: 130/44;
+    margin-bottom: 20px;
+    /* height:120px; */
+    width: 120px;
+  }
+</style>
