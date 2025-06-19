@@ -1,11 +1,11 @@
 <div class="container">
-    <div class="money-area">money-area</div>
-    <div class="cards-area">cards-area</div>
-    <div class="calendar-area">calendar-area</div>
-    <div class="offers-area">offers-area</div>
-    <div class="loan-area">loan-area</div>
-    <div class="admin-area">admin-area</div>
-    <div class="activity-area">activity-area</div>
+    <a class="money-area">money-area</a>
+    <a class="cards-area">cards-area</a>
+    <a href="http://localhost:8000/calendar"class="calendar-area">calendar-area</a>
+    <a class="offers-area">offers-area</a>
+    <a class="loan-area">loan-area</a>
+    <a class="admin-area">admin-area</a>
+    <a href="http://localhost:8000/transactions" class="activity-area">activity-area</a>
 </div>
 
 <style>
@@ -19,7 +19,8 @@
     grid-row-gap: 12px;
 }
 
-.container div {
+.container a {
+    text-decoration: none;
     background-color: #285239;
     color: white;
     display: flex;
@@ -28,6 +29,12 @@
     font-size: 24px;
     font-weight: bold;
     border-radius: 10px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.container a:hover {
+    background-color: #1a3b2c;
 }
 
 .money-area { grid-area: 1 / 1 / 4 / 6; }

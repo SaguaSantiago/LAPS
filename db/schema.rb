@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_175852) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
   create_table "accounts", force: :cascade do |t|
     t.decimal "balance", precision: 10, scale: 2, default: "0.0"
     t.string "cvu"
@@ -128,10 +128,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_175852) do
     t.time "creation_date"
     t.decimal "amount", precision: 15, scale: 2, default: "0.0"
     t.integer "account_id"
-    t.string "transaction_type"
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category_id"
     t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["category_id"], name: "index_transactions_on_category_id"
   end
 
   create_table "transfer", force: :cascade do |t|
@@ -183,6 +185,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_175852) do
   add_foreign_key "offers", "accounts"
   add_foreign_key "quotas", "loans"
   add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "categories"
   add_foreign_key "transfer", "transactions"
   add_foreign_key "validities", "accounts"
   add_foreign_key "validities", "offers"

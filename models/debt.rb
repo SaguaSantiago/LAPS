@@ -20,6 +20,6 @@ class Debt < Transaction
     ActiveRecord::Base.transaction do
       source_account.balance -= amount
       source_account.save!
+      end
     end
-  end
 end

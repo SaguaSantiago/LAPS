@@ -114,7 +114,7 @@ class App < Sinatra::Application
 
   get '/calendar' do
     redirect '/login' unless session[:user_id]
-    backDays = [6,0,1,2,3,4,5]
+    @filter = params[:filter] || 'historial'
     user = User.find(session[:user_id])
     account = user.account
 
@@ -141,4 +141,82 @@ class App < Sinatra::Application
                   .distinct
     erb :calendar, layout: :sectionLayout
   end
+
+  get '/admin-gastos' do
+    redirect '/login' unless session[:user_id]
+    user = User.find(session[:user_id])
+    account_id = user.account
+    @sectionName = { label: "admin-gastos" }
+
+    one_year_ago = Date.today << 12
+
+    categories = Category.where(account_id: account_id).distinct
+    
+    total_transactions = Transaction.where(account_id: account_id).where('created_at  >= ?', one_year_ago).count
+    total_events = Event.joins(:event_dates)
+                    .where(account_id: account_id)
+                    .where(event_dates: { date: one_year_ago..Date.today })
+                    .distinct
+                    .count
+    total = total_transactions + total_events
+
+    @categories = categories.map do |category|
+      tx_count = category.transactions.where('created_at  >= ?', one_year_ago).count
+      event_count = category.events
+                      .joins(:event_dates)
+                      .where(event_dates: { date: one_year_ago..Date.today })
+                      .distinct
+                      .count
+      category_total = tx_count + event_count
+
+      percentage = total > 0 ? ((category_total.to_f / total) * 100).round(2) : 0
+
+      {
+        id: category.id,
+        name: category.name,
+        color: category.color,
+        percentage: percentage
+      }
+    end
+
+    erb :adminGastos, layout: :sectionLayout
+  end
+
+    get '/loan' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account_id = user.account
+      @sectionName = 
+    { label: "Sacar Prestamos"}
+
+      @categories = Category.where(account_id: account_id).distinct
+
+      puts @categories
+      erb :loan, layout: :sectionLayout
+    end 
+    get '/transactions' do
+      redirect '/login' unless session[:user_id]
+    
+      @user = User.find(session[:user_id])
+      account = @user.account
+    
+      # traer las transacciones
+      #@transactions = account.transactions.order(created_at: :desc)
+      
+      #@transactions = Transaction.where(account_id: account).order(created_at: :desc)
+      account = @user.account
+  
+      if account
+        @transactions = account.transactions.order(created_at: :desc)
+      else
+        @transactions = []  # o ActiveRecord::Relation vacío
+      end
+  
+      @sectionName = { label: "Últimos movimientos" }
+      erb :transactions, layout: :sectionLayout
+    end
+    get '/transactions/:id' do
+      @transaction = Transaction.find(params[:id])
+      erb :show, layout: :sectionLayout
+    end
 end

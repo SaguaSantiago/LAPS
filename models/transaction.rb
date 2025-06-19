@@ -1,6 +1,6 @@
 class Transaction < ActiveRecord::Base
-    self.abstract_class = true
-
+    belongs_to :account
+    belongs_to :category
     validates :amount, presence: true, numericality: { greater_than: 0 }
 
 end
