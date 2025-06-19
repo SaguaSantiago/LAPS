@@ -18,6 +18,7 @@ require_relative 'models/quota'
 require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
+require_relative 'models/category'
 
 
 class App < Sinatra::Application
@@ -100,7 +101,7 @@ class App < Sinatra::Application
 
   get '/calendar' do
     redirect '/login' unless session[:user_id]
-    backDays = [6,0,1,2,3,4,5]
+    @filter = params[:filter] || 'historial'
     user = User.find(session[:user_id])
     account = user.account
 
@@ -126,4 +127,30 @@ class App < Sinatra::Application
                   .distinct
     erb :calendar, layout: :sectionLayout
   end
+
+    get '/admin-gastos' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account_id = user.account
+      @sectionName = 
+    { label: "admin-gastos"}
+
+      @categories = Category.where(account_id: account_id).distinct
+
+      puts @categories
+      erb :adminGastos, layout: :sectionLayout
+    end 
+
+    get '/loan' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account_id = user.account
+      @sectionName = 
+    { label: "Sacar Prestamos"}
+
+      @categories = Category.where(account_id: account_id).distinct
+
+      puts @categories
+      erb :loan, layout: :sectionLayout
+    end 
 end

@@ -16,14 +16,13 @@ class Category < ActiveRecord::Base
     end
     
     def unique_name_account
-        if name.present? && account_id.present?
-            if Category.where(account_id: account_id)
-                    .where('LOWER(name) = ?', name.downcase)
-                        .where.not(id: id)
-                        .exists?
-                errors.add(:name, 'ya existe en esta cuenta esa categoría')
-            end
+      if name.present? && account_id.present?
+        if Category.where(account_id: account_id)
+                   .where('LOWER(name) = ?', name.downcase)
+                   .where.not(id: id)
+                   .exists?
+          errors.add(:name, 'ya existe en esta cuenta esa categoría')
         end
+      end
     end
 end
-  
