@@ -1,19 +1,23 @@
     <div class="categories-container">
         <section class ="categories-section">
-            <div class="category">
-                <% @categories.each do |category| %>
-                    <div class="category">
-                        <h3><%= category.name %></h3>
-                        <%# Add more category details if needed %>
-                    </div>
-                <% end %>
-            </div>
+            <% @categories.each do |category| %>
+                <button style="background: <%=category.color%>" class="category">
+                    <h3><%= category.name %></h3>
+                </button>
+            <% end %>
+                <button style="background: #00DFA2" class="category">
+                    <h3>
+                        <img src="/images/plus.svg" alt="plus-icon" class= "plus-icon">
+                    </h3>
+                </button>
         </section>
     
     </div>
 
 <style>
+
     .categories-container {
+        border: 1px solid red;
         width: 100%;
         height: 80vh;
         display: flex;
@@ -21,27 +25,45 @@
         align-items: center;
         background-color: var(--bg-color);
     }
+
     .categories-section {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        margin-left: 100px;
+        margin-right: 100px;
+        display:flex;
+        flex-wrap:wrap;
+        gap: 20px;
         justify-content: center;
-        align-items: center;
-        padding: 20px;
-        width: 100%;
-        height: 100%;
-    }
-    .category {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        width: 200px;
-        height: 200px;
-        padding: 10px;
-        margin: 5px;
-        background-color: var(--bg-color-light);
-        border-radius: 5px;
-        box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+        padding: 40px 20px;
     }
 
+    .category {
+        position: relative; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 300px;
+        height: 300px;
+        padding: 30px 50px;
+        color: #1A2820 ;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        background: var(--bg-color-light);
+        cursor: pointer;
+        border: none;
+        font-size: 35px;
+        transition: transform 0.2s ease; 
+        border-radius: 10px;
+    }
+    .plus-icon {
+        width: 60px;
+        height: 60px;
+    }
+    .category:hover {
+        transform: scale(1.03);
+        transition: transform 0.2s ease;
+    }
+
+    .category:active {
+        transform: scale(0.97);
+    }
 </style>
