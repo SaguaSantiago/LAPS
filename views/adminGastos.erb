@@ -28,8 +28,8 @@
     <% @categories.each do |category| %>
     <article class="category">
       <span class="category-title"
-        ><div style="background-color: <%= category.color %>;" class="color"></div>
-        <%= category.name %></span
+        ><div style="background-color: <%= category[:color] %>;" class="color"></div>
+        <%= category[:name] %> </span
       >
       <span><%= category[:percentage] %>%</span>
     </article>

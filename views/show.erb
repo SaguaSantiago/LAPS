@@ -1,0 +1,75 @@
+<style>
+  .transaction-detail {
+    width: 80%;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #333;
+  }
+
+  .transaction-detail h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+
+  .transaction-info {
+    margin-bottom: 15px;
+  }
+
+  .label {
+    font-weight: bold;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: var(--primary-color-light);
+    text-decoration: none;
+  }
+</style>
+
+<div class="transaction-detail">
+  <h2>Detalle de Operación</h2>
+
+  <div class="transaction-info">
+    <span class="label">Fecha:</span>
+    <%= @transaction.created_at.strftime("%d/%m/%Y %H:%M") %>
+  </div>
+
+  <div class="transaction-info">
+    <span class="label">Tipo:</span>
+    <%= @transaction.type %>
+  </div>
+
+  <div class="transaction-info">
+    <span class="label">Monto:</span>
+    $<%= sprintf('%.2f', @transaction.amount) %>
+  </div>
+
+  <div class="transaction-info">
+    <span class="label">Descripción:</span>
+    <br>
+    <% case @transaction %>
+      <% when Transfer %>
+        Transferencia<br>
+        De: <%= @transaction.source_account&.cvu || 'N/A' %><br>
+        A: <%= @transaction.target_account&.cvu || 'N/A' %>
+      <% when Loan %>
+        Préstamo<br>
+        Cuotas: <%= @transaction.quotas_number %><br>
+        Interés: <%= @transaction.interest %>%
+      <% when Debt %>
+        Débito<br>
+        Fecha de vencimiento: <%= @transaction.maturity_date.strftime("%d/%m/%Y") %>
+      <% when Deposit %>
+        Depósito en cuenta<br>
+        Método: <%= @transaction.method %>
+      <% else %>
+        Otro tipo de movimiento.
+    <% end %>
+  </div>
+
+  <a href="/transactions" class="back-link">&larr; Volver a movimientos</a>
+</div>
