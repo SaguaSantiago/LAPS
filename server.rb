@@ -128,12 +128,16 @@ class App < Sinatra::Application
     erb :calendar, layout: :sectionLayout
   end
 
-    get '/gastos' do
+    get '/admin-gastos' do
       redirect '/login' unless session[:user_id]
       user = User.find(session[:user_id])
       account_id = user.account
+      @sectionName = 
+    { label: "admin-gastos"}
 
       @categories = Category.where(account_id: account_id).distinct
-      erb :gastos, layout: :sectionLayout
+
+      puts @categories
+      erb :adminGastos, layout: :sectionLayout
     end 
 end

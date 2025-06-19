@@ -1,0 +1,142 @@
+<main>
+  <section class="buttons">
+    <a class="ultimos-ingresos" href="/historial">
+      <img width="30px" src="/images/trending-up.svg" alt="trending-up" /><span
+        >Últimos Ingresos</span
+      >
+    </a>
+    <a class="proximos-debitos" href="">
+      <img width="30px" src="/images/progress.svg" alt="trending-up" />
+      <span>Proximos Debitos</span>
+    </a>
+    <a class="categorias" href="/categories"
+      ><img width="30px" src="/images/category.svg" alt="trending-up" />
+      <span>Categorias</span>
+    </a>
+  </section>
+  <section class="gastos">
+    <a class="category-title" href="/categories">
+      <span
+        ><img
+          src="/images/arrow-back.svg"
+          height="10px"
+          style="margin-right: 10px"
+          alt=""
+        />Categorias</span
+      >
+    </a>
+
+    <article class="category">
+      <span class="category-title">Transporte</span>
+      <span>30%</span>
+    </article>
+  </section>
+  <section class="hero">
+    <p>Te brindamos todas las herramientas para administrar tu economia</p>
+    <img src="/images/gastos-illustration.svg" alt="illustration" />
+  </section>
+</main>
+
+<style>
+  main {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  section {
+    width: 30%;
+    min-height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  section.buttons a {
+    height: 110px;
+    border-radius: 15px;
+    max-width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 30px;
+    gap: 15px;
+  }
+
+  span {
+    display: inline-block;
+  }
+
+  a.ultimos-ingresos {
+    background-color: #0b351d;
+  }
+
+  a.proximos-debitos {
+    background-color: #4ebe7c;
+    color: black;
+  }
+
+  a.categorias {
+    background-color: #285239;
+  }
+
+  section.gastos {
+    background-color: #285239;
+    border-radius: 15px;
+    padding: 10px;
+    overflow-y: auto;
+  }
+
+  .gastos span {
+    display: inline-block;
+    color: white;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  section.hero p {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+  }
+
+  section.gastos article.category span {
+    display: inline-block;
+    text-align: start;
+    width: min-content;
+  }
+
+  section.gastos article.category {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    text-align: start;
+    padding: 0 40px;
+  }
+
+  section.gastos article.category::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    top: 50%;
+  }
+
+  .category-title {
+    margin-left: 10px;
+    background-color: transparent !important;
+  }
+</style>
