@@ -38,14 +38,38 @@
             padding: 0 40px;
             background: linear-gradient(to right, var(--bg-color) 80%, var(--bg-color-light) 100%);
             display: flex;
-            justify-content: end;
+            justify-content: space-between;
             align-items: center;
             color: white;
             box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         }
 
+        .title-container{
+          font-size: 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .arrow{
+          width: 30px;
+          height: 30px;
+          margin-right: 20px;
+          cursor: pointer;
+        }
+
         .logo {
             height: 110%;
+        }
+
+        .header-title {
+          border: none;
+          font-size: 40px;
+          background: transparent;
+          color: white;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
         }
 
     </style>
@@ -55,7 +79,12 @@
   <% end %>
 
     <header class="section-header">
-        <img class="logo" src="/images/Logo-light.svg" alt="wallet-logo">
+      <div class="title-container">
+        <button onclick="history.back()" class="header-title"><img src="/images/arrow-back.svg" alt="back" class= "arrow"></button>
+        <h1 class="header-title"><%= @sectionName[:label] %></h1>
+      </div>
+
+      <a href="http://localhost:8000"><img class="logo" src="/images/Logo-light.svg" alt="wallet-logo"></a>
     </header>
 
   <%= yield %>

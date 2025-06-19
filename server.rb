@@ -10,8 +10,8 @@ require 'sqlite3'
 require 'bcrypt'
 require_relative 'models/user'
 require_relative 'models/account'
-require_relative 'models/offer'
-require_relative 'models/validity'
+# require_relative 'models/offer'
+# require_relative 'models/validity'
 require_relative 'models/transaction'
 require_relative 'models/loan'
 require_relative 'models/quota'
@@ -54,6 +54,8 @@ class App < Sinatra::Application
 
 
   get '/transference' do 
+    @sectionName = 
+    { label: "Transferir Dinero"}
     erb :transference, layout: :sectionLayout
   end
   
@@ -116,7 +118,8 @@ class App < Sinatra::Application
 
     days_to_sunday = (7 - last_of_month.wday) % 7
     @lastDay = last_of_month + days_to_sunday
-
+    @sectionName = 
+    { label: "Calendario"}
     # Buscar eventos solo en ese rango extendido
     @events = Event.joins(:event_dates)
                   .where(account_id: account)
