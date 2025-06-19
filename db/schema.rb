@@ -50,23 +50,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
     t.index ["transaction_id"], name: "index_categories_on_transaction_id"
   end
 
-  create_table "debt", force: :cascade do |t|
-    t.date "maturity_date"
-    t.decimal "interest", precision: 5, scale: 2
-    t.decimal "outstanding_balance", precision: 15, scale: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "deposit", force: :cascade do |t|
-    t.string "method"
-    t.integer "reference"
-    t.integer "transaction_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["transaction_id"], name: "index_deposit_on_transaction_id"
-  end
-
   create_table "event_dates", force: :cascade do |t|
     t.integer "transaction_id"
     t.date "date"
@@ -93,16 +76,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
     t.index ["category_id"], name: "index_events_on_category_id"
   end
 
-  create_table "loans", force: :cascade do |t|
-    t.integer "quotas_number"
-    t.date "expiration_period"
-    t.decimal "interest", precision: 5, scale: 2
-    t.integer "transaction_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["transaction_id"], name: "index_loan_on_transaction_id"
-  end
-
   create_table "offers", force: :cascade do |t|
     t.integer "id_offer"
     t.string "company_offer"
@@ -114,13 +87,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
   end
 
   create_table "quotas", force: :cascade do |t|
-    t.integer "loan_id", null: false
+    t.integer "transaction_id", null: false
     t.integer "number"
     t.boolean "state", default: false
     t.float "quota_mount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["loan_id"], name: "index_quotas_on_loan_id"
+    t.index ["transaction_id"], name: "index_quotas_on_transaction_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -144,14 +117,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
     t.integer "target_account_id"
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["category_id"], name: "index_transactions_on_category_id"
-  end
-
-  create_table "transfer", force: :cascade do |t|
-    t.string "method"
-    t.integer "transaction_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["transaction_id"], name: "index_transfer_on_transaction_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -185,20 +150,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
   add_foreign_key "categories", "accounts"
   add_foreign_key "categories", "events"
   add_foreign_key "categories", "transactions"
-  add_foreign_key "deposit", "transactions"
   add_foreign_key "event_dates", "transactions"
   add_foreign_key "event_schedules", "event_dates"
   add_foreign_key "event_schedules", "events"
   add_foreign_key "events", "accounts"
   add_foreign_key "events", "categories"
-  add_foreign_key "loans", "transactions"
   add_foreign_key "offers", "accounts"
-  add_foreign_key "quotas", "loans"
+  add_foreign_key "quotas", "transactions"
   add_foreign_key "transactions", "accounts"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
   add_foreign_key "transactions", "accounts", column: "target_account_id"
   add_foreign_key "transactions", "categories"
-  add_foreign_key "transfer", "transactions"
   add_foreign_key "validities", "accounts"
   add_foreign_key "validities", "offers"
 end

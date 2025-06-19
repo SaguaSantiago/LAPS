@@ -5,7 +5,6 @@ class Loan < Transaction
 
     validates :expiration_period, presence: true
     validates :quotas_number, presence: true, numericality: { greater_than: 0 }
-    class Loan < Transaction
 
     #Callback para que cuando se cree el préstamo, se acredite el dinero a la cuenta destino
     after_create :apply_loan
@@ -18,11 +17,11 @@ class Loan < Transaction
       	    cuota_monto = (amount / quotas_number).round(2)
       
       	    quotas_number.times do |i|
-            quotas.create!(
-            number: i + 1,
-            quota_mount: cuota_monto,
-            state: false
-            )
+                quotas.create!(
+                number: i + 1,
+                quota_mount: cuota_monto,
+                state: false)
+            end
     	end
     end
 end

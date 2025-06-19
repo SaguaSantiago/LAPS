@@ -6,7 +6,6 @@ class CreateQuotas < ActiveRecord::Migration[7.0]
       t.boolean :state, default: false
       t.float :quota_mount
       t.timestamps
-      t.timestamps
     end
   end
 end
