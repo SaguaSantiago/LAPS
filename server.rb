@@ -219,4 +219,13 @@ class App < Sinatra::Application
       @transaction = Transaction.find(params[:id])
       erb :show, layout: :sectionLayout
     end
+
+    get '/newCategory' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account = user.account
+      @categories = Category.where(account_id: account).distinct
+      @sectionName = { label: "Crear Categoría" }
+      erb :newCategory, layout: :sectionLayout
+    end
 end
