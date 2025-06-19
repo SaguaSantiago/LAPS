@@ -75,6 +75,12 @@ class App < Sinatra::Application
     erb :signup
   end
 
+  get '/transference' do
+    require_login
+    @sectionName = { label: "Crear Categoría" }
+    erb :transference, layout: :sectionLayout
+  end
+
   post '/signup' do
     user = User.new(
       dni: params[:dni],
