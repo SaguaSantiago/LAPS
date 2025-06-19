@@ -1,7 +1,6 @@
 class Category < ActiveRecord::Base
     validates :name, presence: true
-    validates :description, presence: true
-  
+    validates :color, presence: true
     belongs_to :account
     has_many :transactions
     has_many :events

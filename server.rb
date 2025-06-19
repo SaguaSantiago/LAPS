@@ -19,6 +19,7 @@ require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
+require_relative 'models/category'
 
 
 class App < Sinatra::Application
@@ -59,6 +60,19 @@ class App < Sinatra::Application
     erb :transference, layout: :sectionLayout
   end
   
+  get '/categories' do 
+    redirect '/login' unless session[:user_id]
+
+    user = User.find(session[:user_id])
+    account = user.account
+
+    @sectionName = { label: "Categorías" }
+
+    @categories = Category.where(account_id: account)
+    @categories = @categories.order(:name) if @categories.any?
+    erb :categories, layout: :sectionLayout
+  end
+
   get '/signup' do
     erb :signup
   end
@@ -118,8 +132,9 @@ class App < Sinatra::Application
 
     days_to_sunday = (7 - last_of_month.wday) % 7
     @lastDay = last_of_month + days_to_sunday
-    @sectionName = 
-    { label: "Calendario"}
+
+     @sectionName = { label: "Calendario" }
+
     # Buscar eventos solo en ese rango extendido
     @events = Event.joins(:event_dates)
                   .where(account_id: account)
