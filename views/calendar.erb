@@ -1,4 +1,8 @@
 <main>
+  <div class="filter-container">
+    <a href="/calendar?filter=historial" class="filter-button">Historial</a>
+    <a href="/calendar?filter=events" class="filter-button">Eventos</a>
+  </div>
   <section class="calendar-container">
     <a
       href="/calendar?delta=<%= (params[:delta] || 0).to_i - 1 %>"
@@ -41,14 +45,15 @@
     margin: 0;
   }
   main {
-    min-width: 100vw;
-    height: calc(100vh - 100px);
+    width: 100%;
+    min-height: calc(100vh - 100px);
     background-color: #1a2820;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     overflow-y : auto;
+    overflow-x: hidden;
   }
   .week-day {
     color: white;
@@ -106,5 +111,18 @@
 
   .day-box.not-in-month p {
     color: rgba(255, 255, 255, 0.19) !important;
+  }
+
+  .filter-container {
+    margin-bottom: 30px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .filter-button {
+    color: white;
+    text-decoration: none;
   }
 </style>
