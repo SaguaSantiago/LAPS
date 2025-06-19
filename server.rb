@@ -258,8 +258,31 @@ class App < Sinatra::Application
       status 404
       erb :not_found, layout: :sectionLayout
     end
-  end
 
+    get '/newCategory' do
+      @sectionName = { label: "Crear Categoría" }
+      erb :newCategory, layout: :sectionLayout
+    end
 
+    post '/newCategory' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account = user.account
 
+      category = Category.new(
+        name: params[:Titulo],
+        description: params[:Descripcion],
+        color: params[:color],
+        account_id: account.id
+      )
+
+      if category.save
+        redirect '/categories'
+      else
+        @errors = category.errors.full_messages
+        erb :newCategory, layout: :sectionLayout
+      end
+    end
+
+    
 end
