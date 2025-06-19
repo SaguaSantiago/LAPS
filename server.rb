@@ -18,6 +18,7 @@ require_relative 'models/quota'
 require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
+require_relative 'models/category'
 
 
 class App < Sinatra::Application
@@ -66,7 +67,7 @@ class App < Sinatra::Application
 
     @sectionName = { label: "Categorías" }
 
-    @categories = Category.where(account_id: account.id)
+    @categories = Category.where(account_id: account)
     @categories = @categories.order(:name) if @categories.any?
     erb :categories, layout: :sectionLayout
   end
@@ -130,6 +131,8 @@ class App < Sinatra::Application
 
     days_to_sunday = (7 - last_of_month.wday) % 7
     @lastDay = last_of_month + days_to_sunday
+
+     @sectionName = { label: "Calendario" }
 
     # Buscar eventos solo en ese rango extendido
     @events = Event.joins(:event_dates)
