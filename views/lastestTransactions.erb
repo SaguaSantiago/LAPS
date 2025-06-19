@@ -1,0 +1,17 @@
+<div class="payments-container">
+    <section class ="payments-section">
+        <h2>Últimos Pagos</h2>
+        <% @transition.each do |payment| %>
+            <div class="payment">
+                <p><strong>Fecha:</strong> <%= payment.date %></p>
+                <p><strong>Monto:</strong> $<%= payment.amount %></p>
+                <p><strong>Descripción:</strong> <%= payment.description %></p>
+            </div>
+        <% end %>
+    </section>
+
+</div>
+
+<style>
+
+</style>

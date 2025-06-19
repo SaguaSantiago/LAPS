@@ -19,7 +19,10 @@ require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
-require_relative 'models/category'
+require_relative 'models/transfer'
+require_relative 'models/debt'
+require_relative 'models/deposit'
+require_relative 'models/loan'
 
 
 class App < Sinatra::Application
@@ -55,11 +58,26 @@ class App < Sinatra::Application
 
 
   get '/transference' do 
+    redirect '/login' unless session[:user_id]
+
     @sectionName = 
     { label: "Transferir Dinero"}
     erb :transference, layout: :sectionLayout
   end
   
+  get '/lastestTransactions' do 
+    redirect '/login' unless session[:user_id]
+
+    user = User.find(session[:user_id])
+    account = user.account
+
+    @sectionName = { label: "Ultimos movimientos"}
+
+    @transactions = Transaction.where(account_id: account)
+    @transactions = @transactions.order(created_at: :desc).limit(10) if @transactions.any?
+    erb :lastestTransactions, layout: :sectionLayout
+  end
+
   get '/categories' do 
     redirect '/login' unless session[:user_id]
 
