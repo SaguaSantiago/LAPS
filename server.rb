@@ -140,4 +140,17 @@ class App < Sinatra::Application
       puts @categories
       erb :adminGastos, layout: :sectionLayout
     end 
+
+    get '/loan' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account_id = user.account
+      @sectionName = 
+    { label: "Sacar Prestamos"}
+
+      @categories = Category.where(account_id: account_id).distinct
+
+      puts @categories
+      erb :loan, layout: :sectionLayout
+    end 
 end
