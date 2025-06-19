@@ -143,18 +143,37 @@ class App < Sinatra::Application
     erb :calendar, layout: :sectionLayout
   end
 
-    get '/admin-gastos' do
-      redirect '/login' unless session[:user_id]
-      user = User.find(session[:user_id])
-      account_id = user.account
-      @sectionName = 
-    { label: "admin-gastos"}
+  get '/admin-gastos' do
+    redirect '/login' unless session[:user_id]
+    user = User.find(session[:user_id])
+    account_id = user.account
+    @sectionName = { label: "admin-gastos" }
 
-      @categories = Category.where(account_id: account_id).distinct
+    one_year_ago = Date.today << 12
 
-      puts @categories
-      erb :adminGastos, layout: :sectionLayout
-    end 
+    categories = Category.where(account_id: account_id).distinct
+    
+    total_transactions = Transaction.where(account_id: account_id).where('date >= ?', one_year_ago).count
+    total_events = Event.where(account_id: account_id).where('created_at >= ?', one_year_ago).count
+    total = total_transactions + total_events
+
+    @categories = categories.map do |category|
+      tx_count = category.transactions.where('date >= ?', one_year_ago).count
+      event_count = category.events.where('created_at >= ?', one_year_ago).count
+      category_total = tx_count + event_count
+
+      percentage = total > 0 ? ((category_total.to_f / total) * 100).round(2) : 0
+
+      {
+        id: category.id,
+        name: category.name,
+        color: category.color,
+        percentage: percentage
+      }
+    end
+
+    erb :adminGastos, layout: :sectionLayout
+  end
 
     get '/loan' do
       redirect '/login' unless session[:user_id]

@@ -25,11 +25,15 @@
         />Categorias</span
       >
     </a>
-
+    <% @categories.each do |category| %>
     <article class="category">
-      <span class="category-title">Transporte</span>
-      <span>30%</span>
+      <span class="category-title"
+        ><div style="background-color: <%= category.color %>;" class="color"></div>
+        <%= category.name %></span
+      >
+      <span><%= category[:percentage] %>%</span>
     </article>
+    <%end%>
   </section>
   <section class="hero">
     <p>Te brindamos todas las herramientas para administrar tu economia</p>
@@ -125,18 +129,18 @@
     padding: 0 40px;
   }
 
-  section.gastos article.category::before {
-    content: '';
+  section.gastos article.category .color {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: red;
-    position: absolute;
-    top: 50%;
   }
 
   .category-title {
     margin-left: 10px;
     background-color: transparent !important;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
   }
 </style>
