@@ -1,22 +1,36 @@
     <div class="category-container">
-        <section class ="category-section">
-            <h3 style="top: 1px;">Nueva Categoria</h3>
-            <div class="input-container">
-                <label>Titulo:</label>
-                <input type="text" placeholder="Titulo de la categoira" name="Titulo" required>
-            </div>
-            <div class="input-container">
-                <label>Descripcion:</label>
-                <input type="text" placeholder="Descripcion de la categoria (opcional)" name="Descripcion" style="height: 100px;">
-            </div>
-            <div style="aling-itmes: center; display: flex; flex-direction: column; gap: 10px;">
-                <label>Color:</label>
-                <div class="color-picker-wrapper">
-                    <input type="color" id="colorPicker" value="#1165A1">
+        <form action="/newCategory" method="post">
+            <div class="category-container">
+                <section class="category-section">
+                <h3>Nueva Categoría</h3>
+                <div class="input-container">
+                    <label>Titulo:</label>
+                    <input type="text" placeholder="Titulo de la categoría" name="Titulo" required>
                 </div>
+                <div class="input-container">
+                    <label>Descripcion:</label>
+                    <input type="text" placeholder="Descripción de la categoría (opcional)" name="Descripcion" style="height: 100px;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <label>Color:</label>
+                    <div class="color-picker-wrapper">
+                    <input type="color" id="colorPicker" name="color" value="#1165A1">
+                    </div>
+                </div>
+                <button type="submit">Crear Categoría</button>
+
+                <% if @errors && @errors.any? %>
+                    <div class="alert alert-danger">
+                    <ul>
+                    <% @errors.each do |error| %>
+                        <li><%= error %></li>
+                    <% end %>
+                    </ul>
+                    </div>
+                <% end %>
+                </section>
             </div>
-            <button type="submit">Crear Categoria</button>
-        </section>
+        </form>
 
         <svg xmlns="http://www.w3.org/2000/svg" width="734.045" height="799.946" viewBox="0 0 734.045 799.946" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" artist="Katerina Limpitsouni" source="https://undraw.co/"><g transform="translate(-626.272 -202)"><g transform="translate(626.272 202)">
             <path d="M23.753,0H0L5.633,26.053H30.158Z" transform="translate(567.58 256.72)" fill="#ed9da0"/>
