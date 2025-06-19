@@ -19,7 +19,6 @@ require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
-require_relative 'models/category'
 
 
 class App < Sinatra::Application

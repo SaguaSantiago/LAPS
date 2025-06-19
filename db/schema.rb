@@ -128,7 +128,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
     t.time "creation_date"
     t.decimal "amount", precision: 15, scale: 2, default: "0.0"
     t.integer "account_id"
-    t.string "transaction_type"
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
