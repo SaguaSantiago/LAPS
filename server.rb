@@ -176,12 +176,22 @@ class App < Sinatra::Application
 
     @sectionName = { label: "Calendario" }
 
-    # Buscar eventos solo en ese rango extendido
-    @events = Event.includes(:category).joins(:event_dates)
-                  .where(account_id: account)
-                  .where(event_dates: { date: @firstDay..@lastDay })
-                  .distinct
+    if params[:filter] == 'historial'
+      start_of_month = Date.new(@dateToShow.year, @dateToShow.month, 1)
+      end_of_month = Date.new(@dateToShow.year, @dateToShow.month, -1)
+
+      @transactions = Transaction
+                        .includes(:category)
+                        .where(account_id: account.id)
+                        .where(created_at: start_of_month..end_of_month)
     erb :calendar, layout: :sectionLayout
+    else
+      @events = Event.includes(:category).joins(:event_dates)
+                    .where(account_id: account)
+                    .where(event_dates: { date: @firstDay..@lastDay })
+                    .distinct
+    erb :calendar, layout: :sectionLayout
+    end
   end
 
   get '/admin-gastos' do

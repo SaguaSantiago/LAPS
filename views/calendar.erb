@@ -17,23 +17,38 @@
       <div class="week-day">Viernes</div>
       <div class="week-day">Sábado</div>
       <div class="week-day">Domingo</div>
-      <% (@firstDay..@lastDay).each do |day| %>
-      <article class="day-box <%= 'today-box' if day == @today %> <%= 'not-in-month' if day.month != @dateToShow.month %>">
-        <div style="width: 24px; height: 100%;">
-          <p><%= day.strftime("%d") %></p>
-          <a class="" href="/create-event?date=<%=day.strftime('%Y-%m-%d')%>">
-            <img src="/images/circle-dashed-plus.svg" alt="more events">
-          </a>
-        </div>
-        <% day_events = @events.select { |e| e.event_dates.any? { |ed| ed.date == day } } %> <% if day_events.any? %>
-        <ul style="flex-grow: 1; height: 100%;">
-          <% day_events.first(3).each do |event| %>
-          <li style="background-color:<%= event.category.color%>9f"><%= event.title %></li>
+        <% (@firstDay..@lastDay).each do |day| %>
+        <article class="day-box <%= 'today-box' if day == @today %> <%= 'not-in-month' if day.month != @dateToShow.month %>">
+          <div style="width: 24px; height: 100%;">
+            <p><%= day.strftime("%d") %></p>
+            <a class="" href="/create-event?delta=<%=params[:delta] || 0 %>&date=<%=day.strftime('%Y-%m-%d')%>">
+              <img style="display:<%="none" if params[:filter] == 'historial'%>;" src="/images/circle-dashed-plus.svg" alt="more events">
+            </a>
+          </div>
+          <% if params[:filter] == 'events'%>
+            <% day_events = @events.select { |e| e.event_dates.any? { |ed| ed.date == day } } %>
+            <% if day_events.any? %>
+              <ul style="flex-grow: 1; height: 100%;">
+                <% day_events.first(3).each do |event| %>
+                  <li style="background-color:<%= event.category.color%>9f"><%= event.title %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          <% else %>
+            <% day_transactions = (@transactions || []).select { |t| t.created_at.to_date == day } %>
+            <% if day_transactions.any? %>
+              <ul style="flex-grow: 1; height: 100%;">
+                <% day_transactions.first(3).each do |tx| %>
+                  <li style="background-color:<%= tx.category.color %>9f">
+                    $<%= tx.amount %> - <%= tx.category.name %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
           <% end %>
-        </ul>
+        </article>
         <% end %>
-      </article>
-      <% end %>
+
     </div>
     <a
       href="/calendar?delta=<%= (params[:delta] || 0).to_i + 1 %>"
