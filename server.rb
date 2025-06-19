@@ -113,6 +113,39 @@ class App < Sinatra::Application
     redirect '/login'
   end
 
+  post '/create-event' do
+      redirect '/login' unless session[:user_id]
+
+    user = User.find(session[:user_id])
+    account = user.account
+
+    event = Event.new(
+      title: params[:title],
+      description: params[:description],
+      period: params[:period],
+      category_id: params[:category_id],
+      account_id: account
+    )
+
+    if event.save
+      status 201
+      redirect '/events'
+    else
+      status 422
+      @errors = event.errors.full_messages
+      erb :createEvent
+    end
+  end
+
+  get '/create-event' do
+      redirect '/login' unless session[:user_id]
+      user = User.find(session[:user_id])
+      account = user.account
+      @sectionName = { label: "Crear Evento" }
+      @categories = Category.where(account_id: account).distinct
+      erb :createEvent, layout: :sectionLayout
+  end
+
   get '/calendar' do
     redirect '/login' unless session[:user_id]
     @filter = params[:filter] || 'historial'
@@ -140,6 +173,7 @@ class App < Sinatra::Application
                   .where(account_id: account)
                   .where(event_dates: { date: @firstDay..@lastDay })
                   .distinct
+    puts "No hay eventos" if @events.empty?
     erb :calendar, layout: :sectionLayout
   end
 

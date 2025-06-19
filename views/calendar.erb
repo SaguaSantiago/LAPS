@@ -20,7 +20,9 @@
       <% (@firstDay..@lastDay).each do |day| %>
       <article class="day-box <%= 'today-box' if day == @today %> <%= 'not-in-month' if day.month != @dateToShow.month %>">
         <p><%= day.strftime("%d") %></p>
-
+        <a class="" href="/create-event">
+          <img src="/images/circle-dashed-plus.svg" alt="more events">
+        </a>
         <% day_events = @events.select { |e| e.event_dates.any? { |ed| ed.date == day } } %> <% if day_events.any? %>
         <ul>
           <% day_events.each do |event| %>
@@ -124,5 +126,22 @@
   .filter-button {
     color: white;
     text-decoration: none;
+  }
+
+  .not-in-month a {
+    display: none;
+  }
+
+  .day-box:hover a {
+    opacity: 1;
+  }
+
+  .day-box a {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .today-box a {
+    opacity: 1;
   }
 </style>
