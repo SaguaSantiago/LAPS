@@ -8,8 +8,6 @@ class Loan < Transaction
     
     #Callback para que cuando se cree el préstamo, se acredite el dinero a la cuenta destino
     after_create :apply_loan
-    after_create :apply_loan
-    
     private
     def apply_loan
     	ActiveRecord::Base.transaction do

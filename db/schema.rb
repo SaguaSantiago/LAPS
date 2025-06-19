@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_185112) do
   create_table "accounts", force: :cascade do |t|
     t.decimal "balance", precision: 10, scale: 2, default: "0.0"
     t.string "cvu"
@@ -93,7 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
     t.index ["category_id"], name: "index_events_on_category_id"
   end
 
-  create_table "loan", force: :cascade do |t|
+  create_table "loans", force: :cascade do |t|
     t.integer "quotas_number"
     t.date "expiration_period"
     t.decimal "interest", precision: 5, scale: 2
@@ -132,6 +132,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
+    t.integer "quotas_number"
+    t.date "expiration_period"
+    t.decimal "interest", precision: 5, scale: 2
+    t.date "maturity_date"
+    t.decimal "outstanding_balance", precision: 15, scale: 2
+    t.string "deposit_method"
+    t.integer "reference_number"
+    t.string "transfer_method"
+    t.integer "source_account_id"
+    t.integer "target_account_id"
     t.index ["account_id"], name: "index_transactions_on_account_id"
     t.index ["category_id"], name: "index_transactions_on_category_id"
   end
@@ -181,10 +191,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_19_133437) do
   add_foreign_key "event_schedules", "events"
   add_foreign_key "events", "accounts"
   add_foreign_key "events", "categories"
-  add_foreign_key "loan", "transactions"
+  add_foreign_key "loans", "transactions"
   add_foreign_key "offers", "accounts"
   add_foreign_key "quotas", "loans"
   add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "accounts", column: "source_account_id"
+  add_foreign_key "transactions", "accounts", column: "target_account_id"
   add_foreign_key "transactions", "categories"
   add_foreign_key "transfer", "transactions"
   add_foreign_key "validities", "accounts"

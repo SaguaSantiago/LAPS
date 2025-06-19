@@ -215,8 +215,17 @@ class App < Sinatra::Application
       @sectionName = { label: "Últimos movimientos" }
       erb :transactions, layout: :sectionLayout
     end
-    get '/transactions/:id' do
-      @transaction = Transaction.find(params[:id])
+  get '/transactions/:id' do
+    @transaction = Transaction.find_by(id: params[:id])
+    if @transaction
       erb :show, layout: :sectionLayout
+    else
+      @sectionName = { label: "Error: Transacción no encontrada" }
+      status 404
+      erb :not_found, layout: :sectionLayout
     end
+  end
+
+
+
 end
