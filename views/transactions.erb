@@ -21,11 +21,12 @@
     color: white;
   }
 
+
   .transactions-table tr:nth-child(even) {
     background-color: #f9f9f9;
   }
 
-  .transactions-table tr:hover {
+  .transactions-table tbody tr:hover {
     background-color: #f1f1f1;
   }
 
@@ -35,8 +36,6 @@
     font-weight: bold;
   }
 </style>
-
-<h2 style="color: white; text-align: center; margin-top: 20px;">Últimos Movimientos</h2>
 
 <table class="transactions-table">
   <thead>
@@ -49,28 +48,35 @@
     </tr>
   </thead>
   <tbody>
+     <% if @transactions.empty? %>
+    <tr>
+      <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+        Aún no se han realizado movimientos.
+      </td>
+    </tr>
+  <% else %>
     <% @transactions.each do |tx| %>
       <tr>
         <td><%= tx.created_at.strftime("%d/%m/%Y %H:%M") %></td>
         <td><%= tx.type %></td>
         <td>
-        <% if tx.is_a?(Transfer) %>
-            De <%= tx.source_account.cvu %> a <%= tx.target_account.cvu %>
-        <% elsif tx.is_a?(Loan) %>
-            Préstamo - <%= tx.quotas_number %> cuotas
-        <% elsif tx.is_a?(Debt) %>
-            Débito (vence <%= tx.maturity_date.strftime("%d/%m/%Y") %>)
-        <% elsif tx.is_a?(Deposit) %>
-            Depósito en cuenta
-        <% else %>
-            Otro movimiento
-        <% end %>
+          <% if tx.is_a?(Transfer) %>
+              De <%= tx.source_account.cvu %> a <%= tx.target_account.cvu %>
+          <% elsif tx.is_a?(Loan) %>
+              Préstamo - <%= tx.quotas_number %> cuotas
+          <% elsif tx.is_a?(Debt) %>
+              Débito (vence <%= tx.maturity_date.strftime("%d/%m/%Y") %>)
+          <% elsif tx.is_a?(Deposit) %>
+              Depósito en cuenta
+          <% else %>
+              Otro movimiento
+          <% end %>
         </td>
-
         <td>$<%= sprintf('%.2f', tx.amount) %></td>
         <td><a class="detail-link" href="/transactions/<%= tx.id %>">Ver</a></td>
       </tr>
     <% end %>
+  <% end %>
   </tbody>
 </table>
 

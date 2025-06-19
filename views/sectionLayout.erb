@@ -16,6 +16,7 @@
         --bg-color-light: #285239;
         --primary-color-light: #53CF86;
         --primary-color: #4CAF50;
+        --logo-color: #1165A1;
       }
       body {
         display: flex;
@@ -37,7 +38,7 @@
 
         .section-header {
             width: 100%;
-            height: 150px;
+            height: 10vh;
             padding: 0 40px;
             background: linear-gradient(to right, var(--bg-color) 80%, var(--bg-color-light) 100%);
             display: flex;
@@ -90,7 +91,7 @@
         <h1 class="header-title"><%= @sectionName[:label] %></h1>
       </div>
 
-      <a href="http://localhost:8000"><img class="logo" src="/images/Logo-light.svg" alt="wallet-logo"></a>
+      <a href="/"><img class="logo" src="/images/Logo-light.svg" alt="wallet-logo"></a>
     </header>
 
   <%= yield %>
