@@ -3,7 +3,7 @@ class Debt < Transaction
     belongs_to :target_account, class_name: 'Account'
 
     validates :maturity_date, presence: true
-    valdiate :has_sufficient_balance
+    validate :has_sufficient_balance
     
     after_create :apply_debt
 

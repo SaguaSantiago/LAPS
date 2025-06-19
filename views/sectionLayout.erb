@@ -13,6 +13,7 @@
         --bg-color-light: #285239;
         --primary-color-light: #53CF86;
         --primary-color: #4CAF50;
+        --logo-color: #1165A1;
       }
       body {
         display: flex;
@@ -83,11 +84,11 @@
 
     <header class="section-header">
       <div class="title-container">
-        <a href="http://localhost:8000" class="header-title"><img src="/images/arrow-back.svg" alt="back" class= "arrow"></a>
+        <a href="/" class="header-title"><img src="/images/arrow-back.svg" alt="back" class= "arrow"></a>
         <h1 class="header-title"><%= @sectionName[:label] %></h1>
       </div>
 
-      <a href="http://localhost:8000"><img class="logo" src="/images/Logo-light.svg" alt="wallet-logo"></a>
+      <a href="/"><img class="logo" src="/images/Logo-light.svg" alt="wallet-logo"></a>
     </header>
 
   <%= yield %>

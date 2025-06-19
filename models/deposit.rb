@@ -1,7 +1,7 @@
-class Loan < Transaction
+class Deposit < Transaction
     belongs_to :target_account, class_name: 'Account'
 
-    validates :method, presence: true
+    validates :deposit_method, presence: true
 
     after_created :apply_deposit 
 

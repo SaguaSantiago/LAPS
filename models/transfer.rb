@@ -1,17 +1,17 @@
-class Tranfer < Transaction
+class Transfer < Transaction
     belongs_to :source_account, class_name: 'Account'
     belongs_to :target_account, class_name: 'Account'
 
-    validates :method, presence: true
-    valdiates :has_sufficient_balance
+    validates :transfer_method, presence: true
+    validate :has_sufficient_balance
 
-    after_created :apply_transfer 
+    after_create :apply_transfer 
 
     private 
 
     def has_sufficient_balance
         if source_account.balance < amount
-            errors.add("no tienes suficiente dinero")
+            errors.add(:base,"no tienes suficiente dinero")
         end
     end
 

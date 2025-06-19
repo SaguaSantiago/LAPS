@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
     validates :name, presence: true
     validates :color, presence: true
+    validate :unique_color_per_account
+    validate :unique_name_account
     belongs_to :account
     has_many :transactions
     has_many :events
@@ -21,6 +23,17 @@ class Category < ActiveRecord::Base
                    .where.not(id: id)
                    .exists?
           errors.add(:name, 'ya existe en esta cuenta esa categoría')
+        end
+      end
+    end
+
+    def unique_color_per_account
+      if color.present? && account_id.present?
+        if Category.where(account_id: account_id)
+                   .where(color: color)
+                   .where.not(id: id)
+                   .exists?
+          errors.add(:color, 'ya existe en esta cuenta una categoría con ese color')
         end
       end
     end
