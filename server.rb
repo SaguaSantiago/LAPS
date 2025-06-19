@@ -168,4 +168,29 @@ class App < Sinatra::Application
       puts @categories
       erb :loan, layout: :sectionLayout
     end 
+    get '/transactions' do
+      redirect '/login' unless session[:user_id]
+    
+      @user = User.find(session[:user_id])
+      account = @user.account
+    
+      # traer las transacciones
+      #@transactions = account.transactions.order(created_at: :desc)
+      
+      #@transactions = Transaction.where(account_id: account).order(created_at: :desc)
+      account = @user.account
+  
+      if account
+        @transactions = account.transactions.order(created_at: :desc)
+      else
+        @transactions = []  # o ActiveRecord::Relation vacío
+      end
+  
+      @sectionName = { label: "Últimos movimientos" }
+      erb :transactions, layout: :sectionLayout
+    end
+    get '/transactions/:id' do
+      @transaction = Transaction.find(params[:id])
+      erb :show, layout: :sectionLayout
+    end
 end

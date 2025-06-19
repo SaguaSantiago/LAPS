@@ -1,0 +1,77 @@
+<!-- views/transactions.erb -->
+<style>
+  .transactions-table {
+    width: 90%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  .transactions-table th,
+  .transactions-table td {
+    padding: 15px;
+    text-align: left;
+  }
+
+  .transactions-table thead {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .transactions-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .transactions-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .detail-link {
+    color: var(--primary-color-light);
+    text-decoration: none;
+    font-weight: bold;
+  }
+</style>
+
+<h2 style="color: white; text-align: center; margin-top: 20px;">Últimos Movimientos</h2>
+
+<table class="transactions-table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Tipo</th>
+      <th>Descripción</th>
+      <th>Monto</th>
+      <th>Detalles</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |tx| %>
+      <tr>
+        <td><%= tx.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+        <td><%= tx.type %></td>
+        <td>
+        <% if tx.is_a?(Transfer) %>
+            De <%= tx.source_account.cvu %> a <%= tx.target_account.cvu %>
+        <% elsif tx.is_a?(Loan) %>
+            Préstamo - <%= tx.quotas_number %> cuotas
+        <% elsif tx.is_a?(Debt) %>
+            Débito (vence <%= tx.maturity_date.strftime("%d/%m/%Y") %>)
+        <% elsif tx.is_a?(Deposit) %>
+            Depósito en cuenta
+        <% else %>
+            Otro movimiento
+        <% end %>
+        </td>
+
+        <td>$<%= sprintf('%.2f', tx.amount) %></td>
+        <td><a class="detail-link" href="/transactions/<%= tx.id %>">Ver</a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
