@@ -46,6 +46,7 @@ class App < Sinatra::Application
   set :database, { adapter: "sqlite3", database: "db/development.sqlite3" }
   
   get '/' do
+    redirect '/login' unless logged_in?
     erb :home, layout: :dashboardLayout 
   end
 
@@ -113,6 +114,17 @@ class App < Sinatra::Application
     redirect '/login'
   end
 
+  helpers do
+    def current_user
+      @current_user ||= User.find_by(id: session[:user_id])
+    end
+
+    def logged_in?
+      !!current_user
+    end
+  end
+
+
   get '/calendar' do
     redirect '/login' unless session[:user_id]
     @filter = params[:filter] || 'historial'
@@ -160,14 +172,19 @@ class App < Sinatra::Application
       redirect '/login' unless session[:user_id]
       user = User.find(session[:user_id])
       account_id = user.account
-      @sectionName = 
-    { label: "Sacar Prestamos"}
+
+      # Cálculo del crédito disponible
+      #@available_credit = account.available_credit
+
+
+      @sectionName = { label: "Sacar Prestamos"}
 
       @categories = Category.where(account_id: account_id).distinct
 
       puts @categories
       erb :loan, layout: :sectionLayout
     end 
+
     get '/transactions' do
       redirect '/login' unless session[:user_id]
     
@@ -189,8 +206,24 @@ class App < Sinatra::Application
       @sectionName = { label: "Últimos movimientos" }
       erb :transactions, layout: :sectionLayout
     end
+
+    
     get '/transactions/:id' do
       @transaction = Transaction.find(params[:id])
       erb :show, layout: :sectionLayout
     end
+
+  post '/' do
+    redirect '/login' unless logged_in?
+
+    cantidad = params[:cantidad].to_f
+
+    if cantidad != 0
+      current_user.account.actualizar_balance(cantidad)
+      redirect '/'
+    else
+      @error = "Debes ingresar una cantidad válida."
+      erb :home
+    end
+  end
 end

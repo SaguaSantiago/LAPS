@@ -2,8 +2,9 @@
 <html>
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <title>My Sinatra App</title>
 </head>
 <body>
@@ -44,5 +45,20 @@
   <% end %>
 
   <%= yield %>
+ 
+<!-- Scripts JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    flatpickr("#calendar", {
+      locale: "es",
+      inline: true,
+      dateFormat: "d-m-Y"
+    });
+  });
+</script>
+
+
+
 </body>
 </html>
