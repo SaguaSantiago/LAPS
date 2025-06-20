@@ -95,6 +95,7 @@ class App < Sinatra::Application
   get '/' do
     redirect '/login' unless logged_in?
     user_categories
+    current_user
     @last_transactions = Transaction
     .includes(:category, :source_account, :target_account)
     .where("source_account_id = :id OR target_account_id = :id", id: current_user.account.id)
@@ -205,6 +206,7 @@ class App < Sinatra::Application
     require_login
     @sectionName = { label: "Categorías" }
     account = current_user.account
+    @categories = Category.where(account_id: current_user.account.id).distinct
     erb :categories, layout: :sectionLayout
   end
 
@@ -356,21 +358,17 @@ class App < Sinatra::Application
   get '/transactions' do
     require_login
     account = current_user.account
-    @transactions = account ? account.transactions.order(created_at: :desc) : []
+
+    if account
+      @transactions = Transaction.where(
+        "account_id = :id OR source_account_id = :id OR target_account_id = :id",
+        id: account.id
+      ).order(created_at: :desc)
+    else
+      @transactions = []
+    end
     @sectionName = { label: "Últimos movimientos" }
     erb :transactions, layout: :sectionLayout
-  end
-
-  get '/transactions/:id' do
-    @transaction = Transaction.find_by(id: params[:id])
-    if @transaction
-      @sectionName = { label: "Detalle de operación" }       
-      erb :show, layout: :sectionLayout
-    else
-      @sectionName = { label: "Error: Transacción no encontrada" }
-      status 404
-      erb :not_found, layout: :sectionLayout
-    end
   end
 
   post '/' do
@@ -413,20 +411,6 @@ class App < Sinatra::Application
     
   
     if loan.save
-      # acreditá el monto
-      account.increment!(:balance, amount)
-  
-      cuota_monto = (amount / installments).round(2)
-      today       = Date.today
-  
-      installments.times do |i|
-        due_date = today >> (i+1)
-        loan.quotas.create!(
-          number:      i + 1,
-          quota_mount: cuota_monto,
-          state:       false,
-        )
-      end
   
       @success = "¡Préstamo de $#{amount} otorgado en #{installments} cuota(s)!"
     else

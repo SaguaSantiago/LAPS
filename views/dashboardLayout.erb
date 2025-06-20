@@ -71,11 +71,23 @@
             top: 0;
             background-color: var(--bg-color);
             transition: width 0.2s ease-in-out;
+            display:flex;
+            flex-direction:column;
+
         }
 
         .dashboard-aside.closed {
             width: 0px;
             
+        }
+
+        form {
+          margin-top: auto;
+          margin-bottom: 20px;
+          width: 100%;
+        }
+        button.logout {
+          width: 100%;
         }
     </style>
 
@@ -85,14 +97,21 @@
 
     <header class="dashboard-header">
         <div class="user-info">
+<<<<<<< HEAD
             <a href="/profile"><img src="/images/avatar.svg" class="user-avatar"></img></a>
             <span>¡Hola Noelia!</span>
+=======
+            <img src="/images/avatar.svg" class="user-avatar"></img>
+            <span>¡Hola <%= @current_user.username%>!</span>
+>>>>>>> 1249ac144590ee8e0b1dcd557692cf89132efced
         </div>
         <img class="logo" src="/images/Logo-light.svg" alt="wallet-logo">
     </header>
 
     <aside class="dashboard-aside closed">
-
+      <form action="/logout" method="post">
+        <button class="logout" type="submit">Cerrar Sesion</button>
+      </form>
     </aside>
   <%= yield %>
 
