@@ -97,22 +97,22 @@
 
     <header class="dashboard-header">
         <div class="user-info">
-<<<<<<< HEAD
-            <a href="/profile"><img src="/images/avatar.svg" class="user-avatar"></img></a>
-            <span>¡Hola Noelia!</span>
-=======
             <img src="/images/avatar.svg" class="user-avatar"></img>
             <span>¡Hola <%= @current_user.username%>!</span>
->>>>>>> 1249ac144590ee8e0b1dcd557692cf89132efced
         </div>
         <img class="logo" src="/images/Logo-light.svg" alt="wallet-logo">
     </header>
 
     <aside class="dashboard-aside closed">
+      <form action="/profile/<%= @current_user.id%>" method="get">
+        <button class="logout" type="submit">Ir a perfil</button>
+      </form>
       <form action="/logout" method="post">
         <button class="logout" type="submit">Cerrar Sesion</button>
       </form>
     </aside>
+
+
   <%= yield %>
 
   <script>

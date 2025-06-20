@@ -177,7 +177,7 @@ class App < Sinatra::Application
     else
       @errors = transference.errors.full_messages
       @sectionName = { label: "Transferir con CBU, CVU o Alias" }
-      @categories = Category.where(account_id: account.id).distinct
+     # @categories = Category.where(account_id: account.id).distinct
       erb :cbuTransference, layout: :sectionLayout
     end
   end
@@ -369,6 +369,27 @@ class App < Sinatra::Application
     end
     @sectionName = { label: "Últimos movimientos" }
     erb :transactions, layout: :sectionLayout
+  end
+
+  get '/transactions/:id' do
+    require_login
+    account = current_user.account
+  
+    # Buscar la transacción que pertenezca a esta cuenta (ya sea directa o como origen/destino)
+    @transaction = Transaction.find_by(id: params[:id])
+  
+    halt 404, erb(:'errors/404') unless @transaction
+  
+    unless (
+      @transaction.account_id == account.id ||
+      @transaction.try(:source_account_id) == account.id ||
+      @transaction.try(:target_account_id) == account.id
+    )
+      halt 403, "No tenés permiso para ver esta transacción."
+    end
+  
+    @sectionName = { label: "Detalle de operación" }
+    erb :show, layout: :sectionLayout
   end
 
   post '/' do
