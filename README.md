@@ -101,10 +101,6 @@ Luego accedé desde: [http://localhost:8000](http://localhost:8000)
 - El archivo `server.rb` contiene toda la lógica de ruteo y helpers.
 - Los datos se actualizan automáticamente con el uso de relaciones `ActiveRecord`.
 
----
+## A completar
 
-## 🤝 Colaboradores
-
-Este proyecto fue desarrollado como parte de un equipo de 4 personas con foco en prácticas de buenas migraciones, trabajo colaborativo y enfoque MVC con Sinatra.
-
----
+- no se pudo configurar el entorno de testing por lo tanto no fueron proporcionados
