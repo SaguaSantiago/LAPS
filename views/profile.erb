@@ -8,8 +8,6 @@
         <p><strong>Teléfono:</strong> <%= @current_user.phone %></p>
         <p><strong>Email:</strong> <%= @current_user.email %></p>
       </div>
-
-      <a href="/editar" class="editar-btn">Editar</a>
     </div>
 
     
@@ -17,8 +15,7 @@
       <div class="acciones-right">
         <form action="/logout" method="POST" style="display:inline;">
             <button type="submit" class="logout-btn">Cerrar sesión</button>
-        </form
-
+        </form>
 
         <form action="/unsubscribe" method="POST" onsubmit="return confirm('¿Estás seguro que querés darte de baja?');">
             <button type="submit" class="delete-btn">Dar de baja</button>
