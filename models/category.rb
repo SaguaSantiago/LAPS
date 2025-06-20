@@ -6,7 +6,7 @@ class Category < ActiveRecord::Base
     belongs_to :account
     has_many :transactions
     has_many :events
-    
+
     #Callbacks
     before_save :normalize_name
     
@@ -22,7 +22,7 @@ class Category < ActiveRecord::Base
                    .where('LOWER(name) = ?', name.downcase)
                    .where.not(id: id)
                    .exists?
-          errors.add(:name, 'ya existe en esta cuenta esa categoría')
+          errors.add('ya existe en esta cuenta esa categoría')
         end
       end
     end
@@ -33,7 +33,7 @@ class Category < ActiveRecord::Base
                    .where(color: color)
                    .where.not(id: id)
                    .exists?
-          errors.add(:color, 'ya existe en esta cuenta una categoría con ese color')
+          errors.add('ya existe en esta cuenta una categoría con ese color')
         end
       end
     end
