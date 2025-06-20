@@ -8,6 +8,8 @@ require 'dotenv/load'
 require 'sinatra'
 require 'sqlite3'
 require 'bcrypt'
+require 'sinatra/flash'
+
 
 # Modelos
 require_relative 'models/user'
@@ -22,6 +24,9 @@ require_relative 'models/eventSchedule'
 require_relative 'models/category'
 require_relative 'models/transfer'
 require_relative 'models/validity'
+require_relative 'models/deposit'
+require_relative 'models/offer'
+require_relative 'models/debt'
 
 class App < Sinatra::Application
   configure :development do 
@@ -36,6 +41,7 @@ class App < Sinatra::Application
 
   set :views, File.expand_path('../views', __FILE__)
   set :public_folder, File.expand_path('../public', __FILE__)
+  register Sinatra::Flash
   enable :sessions
 
   set :database, { adapter: "sqlite3", database: "db/development.sqlite3" }
@@ -429,5 +435,45 @@ class App < Sinatra::Application
   
     erb :loan, layout: :sectionLayout
   end
+
+  get '/profile/:id' do
+    halt(403, "No autorizado") unless current_user&.id == params[:id].to_i
   
+    @current_user = current_user
+    erb :profile
+  end
+
+   post '/unsubscribe' do
+    halt(403, "No autorizado") unless current_user
+
+   account = current_user.account
+
+    if account
+    
+    account.transactions.destroy_all
+    account.categories.destroy_all
+    account.events.destroy_all
+    account.offers.destroy_all
+    account.validities.destroy_all
+
+    
+    Deposit.where(target_account_id: account.id).destroy_all
+
+  
+    Loan.where(source_account_id: account.id).or(Loan.where(target_account_id: account.id)).destroy_all
+    Transfer.where(source_account_id: account.id).or(Transfer.where(target_account_id: account.id)).destroy_all
+    Debt.where(source_account_id: account.id).or(Debt.where(target_account_id: account.id)).destroy_all
+
+    account.destroy
+    end
+    
+    current_user.destroy
+
+    session.clear
+
+    flash[:notice] = "Tu cuenta fue eliminada con éxito."
+
+    redirect '/login'
+  end
+
 end

@@ -3,7 +3,7 @@ class Deposit < Transaction
 
     validates :deposit_method, presence: true
 
-    after_created :apply_deposit 
+    after_create :apply_deposit
 
     private 
 
