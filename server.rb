@@ -199,6 +199,7 @@ class App < Sinatra::Application
     require_login
     @sectionName = { label: "Categorías" }
     account = current_user.account
+    @categories = Category.where(account_id: current_user.account.id).distinct
     erb :categories, layout: :sectionLayout
   end
 
@@ -407,20 +408,6 @@ class App < Sinatra::Application
     
   
     if loan.save
-      # acreditá el monto
-      account.increment!(:balance, amount)
-  
-      cuota_monto = (amount / installments).round(2)
-      today       = Date.today
-  
-      installments.times do |i|
-        due_date = today >> (i+1)
-        loan.quotas.create!(
-          number:      i + 1,
-          quota_mount: cuota_monto,
-          state:       false,
-        )
-      end
   
       @success = "¡Préstamo de $#{amount} otorgado en #{installments} cuota(s)!"
     else
