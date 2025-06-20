@@ -1,8 +1,23 @@
 class Account < ActiveRecord::Base
   belongs_to :user
-  has_many :transactions
+  
+  has_many :categories, dependent: :destroy
+  has_many :transactions, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :offers, dependent: :destroy
+  has_many :validities, dependent: :destroy
 
-   attribute :balance, :decimal, default: 0.0
+  has_many :received_deposits, class_name: "Deposit", foreign_key: "target_account_id", dependent: :destroy
+  has_many :loans_as_source, class_name: "Loan", foreign_key: "source_account_id", dependent: :destroy
+  has_many :loans_as_target, class_name: "Loan", foreign_key: "target_account_id", dependent: :destroy
+  has_many :transfers_as_source, class_name: "Transfer", foreign_key: "source_account_id", dependent: :destroy
+  has_many :transfers_as_target, class_name: "Transfer", foreign_key: "target_account_id", dependent: :destroy
+  has_many :debts_as_source, class_name: "Debt", foreign_key: "source_account_id", dependent: :destroy
+  has_many :debts_as_target, class_name: "Debt", foreign_key: "target_account_id", dependent: :destroy
+
+
+
+  attribute :balance, :decimal, default: 0.0
   attribute :credit_limit, :decimal, default: 100_000.00
 
 

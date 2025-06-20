@@ -52,3 +52,5 @@ gem 'dotenv'
 
 #cifrar contraseñas de forma segura.
 gem 'bcrypt'
+
+gem 'sinatra-flash'
