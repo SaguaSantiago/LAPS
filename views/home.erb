@@ -90,7 +90,7 @@
     </div>
   </a>
 
-  <a href="/transference" class="ultimos-movimientos">
+  <a href="/transference" style="justify-content:start;" class="ultimos-movimientos">
     <div class="header">
       <span class="icon">🔁</span>
       <h2>Últimos movimientos</h2>
@@ -98,41 +98,20 @@
     </div>
 
     <div class="movimientos-lista">
-      <div class="movimiento">
-        <div class="icono-categoria">🚐</div>
-        <div class="info">
-          <strong>Úber</strong>
-          <p class="categoria">Transporte</p>
+      <% @last_transactions.each do |tx| %>
+        <div class="movimiento">
+          <div class="info">
+            <strong><%= tx.description || "Sin descripción" %></strong>
+            <p class="categoria"><%= tx.category.name %></p>
+          </div>
+          <div class="detalles">
+            <span class="fecha"><%= tx.created_at.strftime("%d/%m") %></span>
+            <span class="monto <%= 'positivo' if tx.target_account_id == current_user.account.id %>">
+              $<%= number_with_precision(tx.amount, precision: 2, delimiter: ".", separator: ",") %>
+            </span>
+          </div>
         </div>
-        <div class="detalles">
-          <span class="fecha">10/06</span>
-          <span class="monto">$3.200,00</span>
-        </div>
-      </div>
-
-      <div class="movimiento">
-        <div class="icono-categoria">🛒</div>
-        <div class="info">
-          <strong>Supermercado</strong>
-          <p class="categoria">Compras</p>
-        </div>
-        <div class="detalles">
-          <span class="fecha">09/06</span>
-          <span class="monto">$5.750,00</span>
-        </div>
-      </div>
-
-      <div class="movimiento">
-        <div class="icono-categoria">🍽️</div>
-        <div class="info">
-          <strong>Restaurante</strong>
-          <p class="categoria">Comida</p>
-        </div>
-        <div class="detalles">
-          <span class="fecha">08/06</span>
-          <span class="monto">$2.450,00</span>
-        </div>
-      </div>
+      <% end %>
     </div>
   </a>
 </div>
@@ -521,6 +500,7 @@
   }
   .ultimos-movimientos {
     grid-area: 1 / 5 / 3 / 9;
+    align-items:start;
   }
   .calendar-area {
     grid-area: 3 / 1 / 6 / 3;

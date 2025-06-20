@@ -79,6 +79,11 @@ class App < Sinatra::Application
   get '/' do
     redirect '/login' unless logged_in?
     user_categories
+    @last_transactions = Transaction
+    .includes(:category, :source_account, :target_account)
+    .where("source_account_id = :id OR target_account_id = :id", id: current_user.account.id)
+    .order(created_at: :desc)
+    .limit(5)
     erb :home, layout: :dashboardLayout 
   end
 
