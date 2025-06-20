@@ -71,11 +71,23 @@
             top: 0;
             background-color: var(--bg-color);
             transition: width 0.2s ease-in-out;
+            display:flex;
+            flex-direction:column;
+
         }
 
         .dashboard-aside.closed {
             width: 0px;
             
+        }
+
+        form {
+          margin-top: auto;
+          margin-bottom: 20px;
+          width: 100%;
+        }
+        button.logout {
+          width: 100%;
         }
     </style>
 
@@ -92,7 +104,9 @@
     </header>
 
     <aside class="dashboard-aside closed">
-
+      <form action="/logout" method="post">
+        <button class="logout" type="submit">Cerrar Sesion</button>
+      </form>
     </aside>
   <%= yield %>
 
