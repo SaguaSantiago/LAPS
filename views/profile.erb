@@ -22,10 +22,19 @@
         </form>
 
       </div>
+
+      <a href="/" class="back-btn">Atrás</a>
+
     </div>
-  </div>
+</div>
+
 
 <style> 
+
+body{
+  background-color: #285239;
+}
+
 .container {
   max-width: 1200px;
   width: 95%;
@@ -39,12 +48,19 @@
   gap: 60px;
 }
 
-    .left, .right {
+    .left{
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+  .right {
+    position: relative; 
+    min-height: 150px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
     .profile-image {
       width: 120px;
       height: 120px;
@@ -129,15 +145,35 @@
     align-items: center;    
     }
 
-.acciones-right a,
-.acciones-right form button {
-  width: 100%;             
-  max-width: 250px;        
-}
+  .acciones-right a,
+  .acciones-right form button {
+    width: 100%;             
+    max-width: 250px;        
+  }
 
     form {
       margin-left: 259px;
       width: 100%;
     }
+
+  .back-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #388e3c;
+  color: #000;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-right: 210px;
+  
+}
+
+.back-btn:hover {
+  background-color: #bbb;
+}
 </style>
 
