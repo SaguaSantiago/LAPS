@@ -39,6 +39,35 @@ class App < Sinatra::Application
   set :database, { adapter: "sqlite3", database: "db/development.sqlite3" }
 
   helpers do
+
+    def user_categories
+      account = current_user.account
+      one_year_ago = Date.today << 12
+      categories = Category.where(account_id: account.id).distinct
+
+      total_transactions = account.transactions.where('created_at >= ?', one_year_ago).count
+      total_events = Event.joins(:event_dates)
+                          .where(account_id: account.id)
+                          .where(event_dates: { date: one_year_ago..Date.today })
+                          .distinct.count
+      total = total_transactions + total_events
+
+      @categories = categories.map do |category|
+        tx_count = category.transactions.where('created_at >= ?', one_year_ago).count
+        event_count = category.events
+                              .joins(:event_dates)
+                              .where(event_dates: { date: one_year_ago..Date.today })
+                              .distinct.count
+        percentage = total > 0 ? ((tx_count + event_count).to_f / total * 100).round(2) : 0
+
+        {
+          name: category.name,
+          color: category.color,
+          percentage: percentage
+        }
+      end
+    end
+
     def current_user
       @current_user ||= User.find_by(id: session[:user_id])
     end
@@ -57,6 +86,12 @@ class App < Sinatra::Application
 
   get '/' do
     redirect '/login' unless logged_in?
+    user_categories
+    @last_transactions = Transaction
+    .includes(:category, :source_account, :target_account)
+    .where("source_account_id = :id OR target_account_id = :id", id: current_user.account.id)
+    .order(created_at: :desc)
+    .limit(5)
     erb :home, layout: :dashboardLayout 
   end
 
