@@ -1,0 +1,150 @@
+<main>
+
+    <form action="/cbuTransference" method="post" class="cbu-form">
+        <div>
+            <h3>Ingresá CBU, CVU o Alias</h3>
+        </div>
+        <div class="inputs">
+            <div class="cbu-input-container">
+                <label for="cbu">CBU, CVU o Alias:</label>
+                <input type="text" name="cbu" placeholder="Ingresá CBU, CVU o Alias" required class="cbu-input">
+            </div>
+            <div class="amount-input-container">
+                <label for="amount">Monto:</label>
+                <input type="number" name="amount" placeholder="Monto" required class="amount-input">
+            </div>
+        </div>
+        <select class="cbu-input" name="category_id" id="category_id">
+            <option value="">Selecciona Categoria</option>
+            <% @categories.each do |category| %>
+             <option value="<%= category.id %>"><%= category.name %></option>
+            <%end%>
+        </select>
+        <button type="submit">Continuar</button>
+         <% if @errors && @errors.any? %>
+            <div class="alert alert-danger">
+            <ul>
+            <% @errors.each do |error| %>
+                <li><%= error %></li>
+            <% end %>
+            </ul>
+            </div>
+        <% end %>
+    </form>
+
+</main>
+
+<style>
+    main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .cbu-form{
+        height: 40vh;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 20px;
+        padding: 40px 30px;
+        background: #e0f9ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        flex: 1 1 400px;
+    }
+
+    .cbu-form input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+
+    .cbu-form button {
+        width: 50%;
+        height: 40px;
+        border-radius: 10px;
+        background-color: var(--logo-color);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s ease;
+    }
+
+    .cbu-form button:hover {
+        transform: scale(1.05);
+    }
+
+    .cbu-form > div:not(.inputs) {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        top: 1px;
+    }
+    .inputs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        height: 30%;
+    }
+    .amount-input {
+        flex: 1;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        height: 40px;
+        padding: 0 10px;
+        transition: border-color 0.2s;
+        min-height: 40px;
+    }
+
+    .cbu-input {
+        flex: 7;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        height: 40px;
+        padding: 0 10px;
+        transition: border-color 0.2s;
+        min-height: 40px;
+    }
+    .cbu-input-container {
+        flex: 6;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+        width: 100%;
+    }
+    .cbu-input-container label {
+        font-size: 12px;
+        padding-left: 7px;
+    }
+    .amount-input-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 5px;
+    }
+    .amount-input-container label {
+        font-size: 12px;
+        padding-left: 7px;
+    }
+    #category_id {
+        width: 50%;
+        max-height: 30px;
+        border-radius: 15px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background-color: white;
+        color: black;
+        font-size: 16px;
+    }

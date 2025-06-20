@@ -14,11 +14,13 @@ require_relative 'models/user'
 require_relative 'models/account'
 require_relative 'models/transaction'
 require_relative 'models/loan'
+require_relative 'models/transfer'
 require_relative 'models/quota'
 require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
+require_relative 'models/validity'
 
 class App < Sinatra::Application
   configure :development do 
@@ -81,6 +83,54 @@ class App < Sinatra::Application
     erb :transference, layout: :sectionLayout
   end
 
+  get '/cbuTransference' do
+    require_login
+    account = current_user.account
+    @categories = Category.where(account_id: account.id).distinct
+    @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+    erb :cbuTransference, layout: :sectionLayout
+  end
+
+  post '/cbuTransference' do
+    require_login
+    
+    account = current_user.account
+    @categories = Category.where(account_id: account.id).distinct
+    target_account =  Account.find_by(cvu: params[:cbu]) ||
+                      Account.find_by(alias: params[:cbu])
+                      
+    if !target_account
+      @errors = ["Cuenta destino no encontrada."]
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      return erb :cbuTransference, layout: :sectionLayout
+    end
+    
+    category = Category.find_by(id: params[:category_id])
+
+    if !category
+      @errors = ["Debe seleccionar una categoría válida."]
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      return erb :cbuTransference, layout: :sectionLayout
+    end
+
+    transference = Transfer.new(
+      source_account: account,
+      target_account: target_account,
+      amount: params[:amount].to_f,
+      category: category
+    )
+
+
+    if transference.save
+      redirect '/transference'
+    else
+      @errors = transference.errors.full_messages
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      @categories = Category.where(account_id: account.id).distinct
+      erb :cbuTransference, layout: :sectionLayout
+    end
+  end
+
   post '/signup' do
     user = User.new(
       dni: params[:dni],
@@ -95,6 +145,7 @@ class App < Sinatra::Application
     if user.save
       redirect '/login'
     else 
+      @categories = Category.where(account_id: account.id).order(:name)
       @errors = user.errors.full_messages
       erb :signup
     end
@@ -104,7 +155,6 @@ class App < Sinatra::Application
     require_login
     @sectionName = { label: "Categorías" }
     account = current_user.account
-    @categories = Category.where(account_id: account.id).order(:name)
     erb :categories, layout: :sectionLayout
   end
 

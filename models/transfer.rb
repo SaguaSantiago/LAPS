@@ -2,7 +2,6 @@ class Transfer < Transaction
     belongs_to :source_account, class_name: 'Account'
     belongs_to :target_account, class_name: 'Account'
 
-    validates :transfer_method, presence: true
     validate :has_sufficient_balance
 
     after_create :apply_transfer 

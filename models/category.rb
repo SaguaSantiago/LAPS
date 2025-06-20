@@ -6,7 +6,7 @@ class Category < ActiveRecord::Base
     belongs_to :account
     has_many :transactions
     has_many :events
-    
+
     #Callbacks
     before_save :normalize_name
     
