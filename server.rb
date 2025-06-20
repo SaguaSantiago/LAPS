@@ -14,11 +14,14 @@ require_relative 'models/user'
 require_relative 'models/account'
 require_relative 'models/transaction'
 require_relative 'models/loan'
+require_relative 'models/transfer'
 require_relative 'models/quota'
 require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
+require_relative 'models/transfer'
+require_relative 'models/validity'
 
 class App < Sinatra::Application
   configure :development do 
@@ -75,6 +78,13 @@ class App < Sinatra::Application
       redirect '/login' unless current_user
     end
   end
+  helpers do
+    def current_account
+      @current_account ||= Account.find_by(user_id: session[:user_id])
+    end
+  end
+  
+
 
   get '/' do
     redirect '/login' unless logged_in?
@@ -111,6 +121,60 @@ class App < Sinatra::Application
     erb :signup
   end
 
+  get '/transference' do
+    require_login
+    @sectionName = { label: "Crear Categoría" }
+    erb :transference, layout: :sectionLayout
+  end
+
+  get '/cbuTransference' do
+    require_login
+    account = current_user.account
+    @categories = Category.where(account_id: account.id).distinct
+    @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+    erb :cbuTransference, layout: :sectionLayout
+  end
+
+  post '/cbuTransference' do
+    require_login
+    
+    account = current_user.account
+    @categories = Category.where(account_id: account.id).distinct
+    target_account =  Account.find_by(cvu: params[:cbu]) ||
+                      Account.find_by(alias: params[:cbu])
+                      
+    if !target_account
+      @errors = ["Cuenta destino no encontrada."]
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      return erb :cbuTransference, layout: :sectionLayout
+    end
+    
+    category = Category.find_by(id: params[:category_id])
+
+    if !category
+      @errors = ["Debe seleccionar una categoría válida."]
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      return erb :cbuTransference, layout: :sectionLayout
+    end
+
+    transference = Transfer.new(
+      source_account: account,
+      target_account: target_account,
+      amount: params[:amount].to_f,
+      category: category
+    )
+
+
+    if transference.save
+      redirect '/transference'
+    else
+      @errors = transference.errors.full_messages
+      @sectionName = { label: "Transferir con CBU, CVU o Alias" }
+      @categories = Category.where(account_id: account.id).distinct
+      erb :cbuTransference, layout: :sectionLayout
+    end
+  end
+
   post '/signup' do
     user = User.new(
       dni: params[:dni],
@@ -125,6 +189,7 @@ class App < Sinatra::Application
     if user.save
       redirect '/login'
     else 
+      @categories = Category.where(account_id: account.id).order(:name)
       @errors = user.errors.full_messages
       erb :signup
     end
@@ -134,7 +199,6 @@ class App < Sinatra::Application
     require_login
     @sectionName = { label: "Categorías" }
     account = current_user.account
-    @categories = Category.where(account_id: account.id).order(:name)
     erb :categories, layout: :sectionLayout
   end
 
@@ -294,6 +358,7 @@ class App < Sinatra::Application
   get '/transactions/:id' do
     @transaction = Transaction.find_by(id: params[:id])
     if @transaction
+      @sectionName = { label: "Detalle de operación" }       
       erb :show, layout: :sectionLayout
     else
       @sectionName = { label: "Error: Transacción no encontrada" }
@@ -315,4 +380,54 @@ class App < Sinatra::Application
       erb :home
     end
   end
+  post '/loan' do
+    redirect '/login' unless session[:user_id]
+  
+    user          = User.find(session[:user_id])
+    account       = user.account
+    amount        = params[:amount].to_f
+    installments  = params[:installments].to_i
+  
+    @sectionName  = { label: "Sacar Préstamos" }
+  
+    if amount <= 0 || ![1,3,6,12].include?(installments)
+      @error = "Monto o cantidad de cuotas inválido."
+      return erb :loan, layout: :sectionLayout
+    end
+
+    loan = Loan.new(
+        account_id: account.id, # MUY IMPORTANTE
+        amount: amount,
+        quotas_number: installments,
+        expiration_period: Date.today >> installments,
+        source_account_id: account.id,
+        target_account_id: account.id,
+      
+    )
+    
+  
+    if loan.save
+      # acreditá el monto
+      account.increment!(:balance, amount)
+  
+      cuota_monto = (amount / installments).round(2)
+      today       = Date.today
+  
+      installments.times do |i|
+        due_date = today >> (i+1)
+        loan.quotas.create!(
+          number:      i + 1,
+          quota_mount: cuota_monto,
+          state:       false,
+        )
+      end
+  
+      @success = "¡Préstamo de $#{amount} otorgado en #{installments} cuota(s)!"
+    else
+      @error = "No se pudo procesar el préstamo."
+    end
+  
+    erb :loan, layout: :sectionLayout
+  end
+  
 end

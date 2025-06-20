@@ -7,19 +7,30 @@
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     color: #333;
+    font-size: 18px;
   }
 
   .transaction-detail h2 {
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-size: 28px;
   }
 
   .transaction-info {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
   }
 
   .label {
     font-weight: bold;
+    display: inline-block;
+    width: 160px;
+  }
+
+  .field-value {
+    display: inline-block;
+    min-width: 200px;
+    font-weight: normal;
   }
 
   .back-link {
@@ -27,6 +38,7 @@
     margin-top: 30px;
     color: var(--primary-color-light);
     text-decoration: none;
+    font-size: 16px;
   }
 </style>
 
@@ -35,41 +47,47 @@
 
   <div class="transaction-info">
     <span class="label">Fecha:</span>
-    <%= @transaction.created_at.strftime("%d/%m/%Y %H:%M") %>
-  </div>
-
-  <div class="transaction-info">
-    <span class="label">Tipo:</span>
-    <%= @transaction.type %>
+    <span class="field-value"><%= @transaction.created_at.strftime("%d/%m/%Y %H:%M") rescue "-----" %></span>
   </div>
 
   <div class="transaction-info">
     <span class="label">Monto:</span>
-    $<%= sprintf('%.2f', @transaction.amount) %>
+    <span class="field-value">$<%= sprintf('%.2f', @transaction.amount || 0) %></span>
   </div>
 
   <div class="transaction-info">
-    <span class="label">Descripción:</span>
-    <br>
-    <% case @transaction %>
-      <% when Transfer %>
-        Transferencia<br>
-        De: <%= @transaction.source_account&.cvu || 'N/A' %><br>
-        A: <%= @transaction.target_account&.cvu || 'N/A' %>
-      <% when Loan %>
-        Préstamo<br>
-        Cuotas: <%= @transaction.quotas_number %><br>
-        Interés: <%= @transaction.interest %>%
-      <% when Debt %>
-        Débito<br>
-        Fecha de vencimiento: <%= @transaction.maturity_date.strftime("%d/%m/%Y") %>
-      <% when Deposit %>
-        Depósito en cuenta<br>
-        Método: <%= @transaction.method %>
-      <% else %>
-        Otro tipo de movimiento.
+    <span class="label">Descripción:</span><br><br>
+
+    <% if @transaction.is_a?(Transfer) %>
+      <div>
+        <span class="label">Tipo:</span> <span class="field-value">Transferencia</span><br>
+        <span class="label">De:</span> <span class="field-value"><%= @transaction.source_account&.cvu || "-----" %></span><br>
+        <span class="label">A:</span> <span class="field-value"><%= @transaction.target_account&.cvu || "-----" %></span>
+      </div>
+    <% elsif @transaction.is_a?(Loan) %>
+      <div>
+        <span class="label">Tipo:</span> <span class="field-value">Préstamo</span><br>
+        <span class="label">Cuotas:</span> <span class="field-value"><%= @transaction.quotas_number || "-----" %></span><br>
+        <span class="label">Interés:</span> <span class="field-value"><%= @transaction.interest || "-----" %>%</span>
+      </div>
+    <% elsif @transaction.is_a?(Debt) %>
+      <div>
+        <span class="label">Tipo:</span> <span class="field-value">Débito</span><br>
+        <span class="label">Fecha de vencimiento:</span> 
+        <span class="field-value"><%= @transaction.maturity_date&.strftime("%d/%m/%Y") || "-----" %></span>
+      </div>
+    <% elsif @transaction.is_a?(Deposit) %>
+      <div>
+        <span class="label">Tipo:</span> <span class="field-value">Depósito en cuenta</span><br>
+        <span class="label">Método:</span> <span class="field-value"><%= @transaction.method || "-----" %></span>
+      </div>
+    <% else %>
+      <div>
+        <span class="field-value">Otro tipo de movimiento.</span>
+      </div>
     <% end %>
   </div>
 
   <a href="/transactions" class="back-link">&larr; Volver a movimientos</a>
 </div>
+

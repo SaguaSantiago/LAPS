@@ -2,20 +2,20 @@
 
         <section class= "buttons">
 
-            <button type= "sumbit">
+            <a type= "sumbit" href="/cbuTransference">
                 <img src="/images/bank.svg" alt="cbu-icon" class= "btn-icon">
                 <span class= "btn-label">Ingresar CBU, CVU o Alias</span>
-            </button>
+            </a>
 
-            <button type= "sumbit">
+            <a type= "sumbit">
                 <img src="/images/tr-card.svg" alt="tel-icon" class= "btn-icon">
                 <span class= "btn-label">Ingresar Celular</span>
-            </button>
+            </a>
 
-            <button type= "sumbit">
+            <a type= "sumbit">
                 <img src="/images/contacts.svg" alt="contacts-icon" class= "btn-icon">
                 <span class= "btn-label">Contactos frecuentes</span>        
-            </button>
+            </a>
 
         </section>
 
@@ -45,7 +45,8 @@
     width:60%;
 }
 
-.buttons > button{
+.buttons > a{
+    text-decoration: none;
     position: relative; 
     display: flex;
     align-items: center;
@@ -63,11 +64,11 @@
     border-radius: 10px;
 }
 
-.buttons > button:hover{
+.buttons > a:hover{
     transform: scale(1.03);
     transition: transform 0.2s ease;
 }
-.buttons > button:active{
+.buttons > a:active{
     transform: scale(0.97);
 }
 .btn-icon{

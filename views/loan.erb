@@ -4,6 +4,30 @@
       <h2>Ingresá el Monto</h2>
       <h3>Podés solicitar hasta $100.000</h3>
     </header>
+
+    <form action="/loan" method="post" class="loan-form">
+      <% if @error %>
+        <p class="error"><%= @error %></p>
+      <% end %>
+
+      <% if @success %>
+        <p class="success"><%= @success %></p>
+      <% end %>
+
+      <label for="amount">Monto ($):</label>
+      <input type="number" name="amount" id="amount" min="1" max="100000" required>
+
+      <label for="installments">Cantidad de cuotas de reintegro:</label>
+      <select name="installments" id="installments" required>
+        <option value="">Seleccionar...</option>
+        <option value="1">1 cuota</option>
+        <option value="3">3 cuotas</option>
+        <option value="6">6 cuotas</option>
+        <option value="12">12 cuotas</option>
+      </select>
+
+      <button type="submit">Solicitar préstamo</button>
+    </form>
   </div>
 
   <img src="/images/loan.svg" alt="loan" />
@@ -12,7 +36,7 @@
 <style>
   main {
     width: 100%;
-    height: calc(100vh - 100px);
+    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: end;
@@ -24,6 +48,8 @@
     height: 80vh;
     border: 1px solid green;
     background: #e0f9ff;
+    display: flex;
+    flex-direction: column;
   }
 
   header.loan-header {
@@ -37,11 +63,44 @@
     color: white;
   }
 
-  header h2 {
-    text-align: center;
+  .loan-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
-  header h3 {
-    font-weight: normal;
+  .loan-form label {
+    font-weight: bold;
+  }
+
+  .loan-form input,
+  .loan-form select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .loan-form button {
+    background-color: #285239;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .loan-form button:hover {
+    background-color: #1e402e;
+  }
+
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+
+  .success {
+    color: green;
+    font-weight: bold;
   }
 </style>
