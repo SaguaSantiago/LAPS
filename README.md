@@ -10,7 +10,6 @@
 - **Sinatra** 4.1 – Framework web liviano
 - **ActiveRecord** – ORM para manejo de base de datos
 - **SQLite3** – Base de datos embebida
-- **Puma** – Servidor web de alto rendimiento
 - **BCrypt** – Hash seguro para contraseñas
 - **Dotenv** – Carga de variables de entorno
 - **Rackup** – Configuración de entorno y despliegue
