@@ -102,13 +102,13 @@
       <% @last_transactions.each do |tx| %>
         <div class="movimiento">
           <div class="info">
-            <strong><%= tx.description || "Sin descripción" %></strong>
-            <p class="categoria"><%= tx.category.name %></p>
+          <strong><%= tx.respond_to?(:description) ? tx.description : "Sin descripción" %></strong>
+          <p class="categoria"><%= tx.category&.name || "Sin categoría" %></p>
           </div>
           <div class="detalles">
             <span class="fecha"><%= tx.created_at.strftime("%d/%m") %></span>
             <span class="monto <%= 'positivo' if tx.target_account_id == current_user.account.id %>">
-              $<%= number_with_precision(tx.amount, precision: 2, delimiter: ".", separator: ",") %>
+            $<%= sprintf('%.2f', tx.amount) %>
             </span>
           </div>
         </div>
