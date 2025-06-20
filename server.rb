@@ -352,21 +352,17 @@ class App < Sinatra::Application
   get '/transactions' do
     require_login
     account = current_user.account
-    @transactions = account ? account.transactions.order(created_at: :desc) : []
+
+    if account
+      @transactions = Transaction.where(
+        "account_id = :id OR source_account_id = :id OR target_account_id = :id",
+        id: account.id
+      ).order(created_at: :desc)
+    else
+      @transactions = []
+    end
     @sectionName = { label: "Últimos movimientos" }
     erb :transactions, layout: :sectionLayout
-  end
-
-  get '/transactions/:id' do
-    @transaction = Transaction.find_by(id: params[:id])
-    if @transaction
-      @sectionName = { label: "Detalle de operación" }       
-      erb :show, layout: :sectionLayout
-    else
-      @sectionName = { label: "Error: Transacción no encontrada" }
-      status 404
-      erb :not_found, layout: :sectionLayout
-    end
   end
 
   post '/' do
