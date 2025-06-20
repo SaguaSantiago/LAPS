@@ -19,6 +19,7 @@ require_relative 'models/event'
 require_relative 'models/eventDate'
 require_relative 'models/eventSchedule'
 require_relative 'models/category'
+require_relative 'models/transfer'
 
 class App < Sinatra::Application
   configure :development do 
@@ -46,6 +47,13 @@ class App < Sinatra::Application
       redirect '/login' unless current_user
     end
   end
+  helpers do
+    def current_account
+      @current_account ||= Account.find_by(user_id: session[:user_id])
+    end
+  end
+  
+
 
   get '/' do
     redirect '/login' unless logged_in?
@@ -259,6 +267,7 @@ class App < Sinatra::Application
   get '/transactions/:id' do
     @transaction = Transaction.find_by(id: params[:id])
     if @transaction
+      @sectionName = { label: "Detalle de operación" }       
       erb :show, layout: :sectionLayout
     else
       @sectionName = { label: "Error: Transacción no encontrada" }
@@ -280,4 +289,54 @@ class App < Sinatra::Application
       erb :home
     end
   end
+  post '/loan' do
+    redirect '/login' unless session[:user_id]
+  
+    user          = User.find(session[:user_id])
+    account       = user.account
+    amount        = params[:amount].to_f
+    installments  = params[:installments].to_i
+  
+    @sectionName  = { label: "Sacar Préstamos" }
+  
+    if amount <= 0 || ![1,3,6,12].include?(installments)
+      @error = "Monto o cantidad de cuotas inválido."
+      return erb :loan, layout: :sectionLayout
+    end
+
+    loan = Loan.new(
+        account_id: account.id, # MUY IMPORTANTE
+        amount: amount,
+        quotas_number: installments,
+        expiration_period: Date.today >> installments,
+        source_account_id: account.id,
+        target_account_id: account.id,
+      
+    )
+    
+  
+    if loan.save
+      # acreditá el monto
+      account.increment!(:balance, amount)
+  
+      cuota_monto = (amount / installments).round(2)
+      today       = Date.today
+  
+      installments.times do |i|
+        due_date = today >> (i+1)
+        loan.quotas.create!(
+          number:      i + 1,
+          quota_mount: cuota_monto,
+          state:       false,
+        )
+      end
+  
+      @success = "¡Préstamo de $#{amount} otorgado en #{installments} cuota(s)!"
+    else
+      @error = "No se pudo procesar el préstamo."
+    end
+  
+    erb :loan, layout: :sectionLayout
+  end
+  
 end
